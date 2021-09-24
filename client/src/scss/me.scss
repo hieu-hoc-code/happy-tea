@@ -1,0 +1,67 @@
+@import '@/scss/variables.scss';
+
+.user-menu {
+  width: 60%;
+  background-color: white;
+  padding: $space-bar 0;
+  border-radius: 0 25px 25px 0;
+  .user-group{
+    width: 70%;
+    margin: $space-bar auto 0;
+    display: flex;
+    justify-content: space-between;
+    &:not(:last-child){
+      margin-bottom: $gap;
+    }
+    input{
+      width: 60%;
+      &:focus{
+        outline: none;
+      }
+    }
+    input[id=female]{
+      margin-left: $space-bar;
+    }
+  }
+  .checkpass{
+    width: 70%;
+    margin: auto;
+    .updatepass{
+      margin-top: $gap;
+      display: none;
+      .input-group{
+        display: flex;
+        justify-content: space-between;
+        &:not(:last-child){
+          margin-bottom: calc(#{$gap*2});
+        }
+        input{
+          width: 50%;
+        }
+      }
+    }
+    input[type="checkbox"]:checked ~ .updatepass{
+      display: block;
+    }
+  }
+  .save{
+    display: flex;
+    justify-content: center;
+    button{
+      cursor: pointer;
+      width: 50%;
+      padding: $gap;
+      border: none;
+      border-radius: $border-radius;
+      box-shadow: 2px 2px 2px #aaa;
+      background-image: linear-gradient($app-button-color, darken($app-button-color, 15));
+      margin-top: calc(#{$space-bar * 2});
+      text-align: center;
+      &:hover {
+        cursor: pointer;
+        color: white;
+        font-weight: bold;
+      }
+    }
+  }
+}

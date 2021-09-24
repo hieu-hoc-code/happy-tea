@@ -1,0 +1,164 @@
+@import './variables.scss';
+
+.main-login{
+  background-color: $content-bg-color;
+  .content-login{
+    width: 85%;
+    margin: 0.5rem auto 0;
+    padding: 2.5rem 0;
+    display: flex;
+    .img-login{
+      width: 50%;
+      min-height: 280px;
+      img{
+        border-radius: 30px 0 0 30px;
+        width: 100%;
+        height: 100%;
+        max-height: 550px;
+      }
+    }
+    .data-login{
+      background-color: white;
+      width: 50%;
+      max-height: 550px;
+      border-radius: 0 30px 30px 0;
+      .register{
+        .input-group{
+          width: 70%;
+          margin: auto;
+          input{
+            margin-bottom: $gap;
+            padding: $gap;
+            width: 100%;
+            border: 1px solid $app-main-text-color;
+            border-radius: 5px;
+            &:focus{
+              outline: none;
+              border: 1px solid #a372e3;
+            }
+          }
+          button{
+            cursor: pointer;
+            width: 100%;
+            padding: $gap;
+            border: none;
+            border-radius: $border-radius;
+            box-shadow: 2px 2px 2px #aaa;
+            background-image: linear-gradient(
+              to right,
+              rgb(250, 232, 235),
+              darken($app-button-color, 15)
+            );
+            margin-top: calc(#{$space-bar * 2});
+            font-size: 16px;
+            &:hover {
+              cursor: pointer;
+              color: white;
+              font-weight: bold;
+            }
+            &:focus{
+              transform: translateY(3px);
+              box-shadow: none;
+            }
+          }
+        }
+      }
+      .form-login{
+        .input-group{
+          width: 70%;
+          margin: auto;
+          input{
+            margin-bottom: $gap;
+            padding: $gap;
+            width: 100%;
+            border: 1px solid $app-main-text-color;
+            border-radius: 3px;
+            &:focus{
+              outline: none;
+              border: 1px solid #a372e3;
+            }
+          }
+          span{
+            color:rgb(8, 60, 104);
+          }
+          button{
+            cursor: pointer;
+            width: 100%;
+            padding: $gap;
+            border: none;
+            border-radius: $border-radius;
+            box-shadow: 2px 2px 2px #aaa;
+            font-size: 16px;
+            background-image: linear-gradient(to right,
+              $app-button-color,
+              darken($app-button-color, 15)
+            );
+            margin-top: calc(#{$space-bar * 2});
+            &:hover {
+              cursor: pointer;
+              color: white;
+              font-weight: bold;
+            }
+            &:focus{
+              transform: translateY(3px);
+              box-shadow: none;
+            }
+          }
+        }
+        .or{
+          text-align: center;
+          margin: calc(#{$space-bar * 3}) auto calc(#{$space-bar * 1.5});
+        }
+        .error{
+          text-align: center;
+          color: #e3728a;
+        }
+        .input-group-btn{
+          width: 70%;
+          display: grid;
+          place-items: center;
+          margin: 0 auto;
+          button{
+            width: 100%;
+            padding: 3px 0;
+            cursor: pointer;
+            font-size: calc(#{$gap * 2});
+            border: none;
+            border-radius: 3px;
+            box-shadow: 2px 2px 2px #aaa;
+            &:active{
+              transform: translateY(3px);
+              box-shadow: none;
+            }
+          }
+          button.fb{
+            margin-bottom: $space-bar;
+            color: blue;
+            background-image: linear-gradient(to right, rgb(233, 238, 255), rgb(122, 122, 252));
+          }
+          button.gg{
+            color: red;
+            background-image: linear-gradient(to right, rgb(233, 238, 255), rgb(252, 122, 202));
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $screen-md){
+  .main-login{
+    .content-login{
+      max-width: 1170px;
+      .img-login{
+        width: 65%;
+      }
+      .data-login{
+        .shipper{
+          display: block;
+          margin-top: 60px;
+        }
+      }
+    }
+  }
+}

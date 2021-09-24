@@ -1,0 +1,136 @@
+@import './variables';
+
+.admin-container {
+    width: 80%;
+    max-width: 1170px;
+    margin: 60px auto;
+    display: flex;
+    .console {
+        flex: 20%;
+        display: flex;
+        flex-direction: column;
+        border-right: 2px solid #e8e8e8;
+        .console-item {
+            padding: 1.5 * $gap;
+            font-weight: 600;
+            color: #333333;
+
+        }
+        .active {
+            background-color: $content-bg-color;
+            color: $app-bg-color
+        }
+    }
+
+    //content    
+    .console-content {
+        flex: 80%;
+    }
+
+    // css chung
+    .admin-item {
+        box-sizing: border-box!important;
+        input, select {
+            font-family: 'Quicksand', sans-serif;
+            width: 280px;
+            padding: 4px 0px 4px 10px;
+            color: #333;
+            border: 1px solid rgb(209, 209, 209);
+            border-radius: 8px;
+            margin: 8px 0;
+            outline: none;
+            &:focus {
+              color: #333;
+              border: 2px solid $app-bg-color;
+            }
+          }
+        margin-left: 30px;
+        .save-btn {
+          font-size: 14px;
+          font-weight: 500;
+          text-align: center;
+    
+          padding: 3px 0;
+          width: 60px;
+          border: 1px solid;
+          border-radius: 8px;
+    
+          color: white;
+          background: $app-bg-color;
+          &:hover {
+            cursor: pointer;
+            opacity: 0.9;
+          }
+        }
+        .title {
+          font-weight: bolder;
+          font-size: 16px;
+          h2 {
+            font-weight: bolder;
+            font-size: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgb(209, 209, 209);
+          }
+        }
+    }
+    .body{
+      margin-top: 24px;
+      padding: 20px 20px;
+      border: 1px solid rgb(209, 209, 209);
+      border-radius: 8px;
+    }
+
+    //modal 
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); 
+  
+      border-radius: 16px;
+      background: white;
+      width: 400px;
+      height: 200px;
+      text-align: center;
+      font-weight: bolder;
+      box-shadow: 1px 2px 15px rgb(135, 134, 134);
+      text-transform: uppercase;
+      .modal-title {
+        height: 50%;
+        text-align: center;
+        font-size: 20px;
+        line-height: 100px;
+        color: white;
+        background-color: #d4999c;
+  
+        border-bottom: 2px solid rgb(243, 241, 241);
+      }
+      .modal-body {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        div{
+          font-weight: 600;
+          margin: 30px;
+          border: 1px solid;
+          border-radius: 8px;
+          padding: 4px 12px;
+          transition: all 0.3s linear;
+          &.confirm-btn {
+            color:#2a8d67;
+            &:hover {
+              color: white;
+              background: #2a8d67;
+            }
+          }
+          &.close-btn {
+            color: rgb(238, 96, 96);
+            &:hover {
+              color: white;
+              background: rgb(238, 96, 96);
+            }
+          }
+        }
+      }
+    }
+}

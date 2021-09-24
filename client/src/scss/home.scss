@@ -1,0 +1,182 @@
+@import '@/scss/variables';
+
+.main-content {
+  background-color: $content-bg-color;
+  .content {
+    padding: $space-bar 0;
+    width: 90%;
+    margin: 0 auto;
+    .slide {
+      max-height: 296px;
+      display: flex;
+      margin: 0 auto 1rem auto;
+      .main-slide {
+        flex: 60%;
+        background-color: $content-bg-color;
+        padding: 5px 10px 0 0;
+        img{
+          max-height: 296px;
+          min-height: 155px;
+        }
+      }
+      .advertise {
+        flex: 40%;
+        display: grid;
+        position: relative;
+        .news {
+          display: flex;
+          padding: 5px 0;
+          img {
+            height: auto;
+            align-items: center;
+          }
+        }
+      }
+      .has-text-centered{
+        padding: 0;
+        width: 100%;
+      }
+    }
+    .list-products {
+      background-color: white;
+      border-radius: 0.6rem;
+      a {
+        text-decoration: none;
+        color: #262b2f;
+      }
+      p {
+        text-transform: uppercase;
+        font-size: calc(#{$app-font-size * 1.8});
+        font-weight: 600;
+        color: $app-bg-color;
+        padding-top: 0.5rem;
+        margin-left: 30px;
+        margin-bottom: 0px;
+        i {
+          color: $app-bg-color;
+          margin-right: $gap;
+        }
+      }
+      .filter-result-body {
+        display: flex;
+        flex-wrap: wrap;
+        .card {
+          width: 25%;
+          .card-item {
+            padding: 5px $gap;
+          }
+          .card-body {
+            margin: 16px;
+            img {
+              width: 100%;
+              max-height: 220px;
+            }
+            .card-title {
+              text-align: left;
+              font-weight: 600;
+              font-size: 16px;
+            }
+
+            .card-desc {
+              margin-top: -$gap;
+              opacity: 0.5;
+            }
+
+            .card-desc,
+            .card-rating {
+              font-size: 14px;
+            }
+
+            .card-price {
+              font-size: 20px;
+              font-weight: 600;
+            }
+          }
+          &:hover {
+            cursor: pointer;
+            box-shadow: 0 7px 29px 0 #64646f33;
+          }
+        }
+      }
+      .page {
+        list-style-type: none;
+        .inActive {
+          opacity: 0.2;
+          &:hover {
+            cursor: default !important;
+          }
+        }
+
+        .active {
+          color: #ff929b !important;
+          border-color: #ff929b !important;
+          transition: 0.3s !important;
+        }
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin: $gap auto;
+        padding: 2 * $gap 0;
+        .page-item {
+          height: 30px;
+          width: 30px;
+          border: 1px solid rgb(131, 131, 131);
+          border-collapse: collapse;
+          border-radius: 6px;
+          margin: 0 10px;
+
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 30px;
+          text-align: center;
+          &:hover {
+            cursor: pointer;
+            color: #ff929b !important;
+            border-color: #ff929b !important;
+            transition: 0.3s !important;
+            i {
+              color: #ff929b !important;
+            }
+          }
+          i {
+            color: rgb(131, 131, 131);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $screen-md) {
+  .main-content {
+    display: flex;
+    .content {
+      max-width: 1170px;
+      margin: $space-bar auto;
+      padding: 0;
+    }
+    .list-products {
+      ul {
+        .sp {
+          width: 100%;
+          display: flex;
+          margin: auto;
+          li {
+            .contents {
+              .add-cart {
+                display: flex;
+                justify-content: center;
+                button {
+                  width: 90%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
