@@ -29,23 +29,24 @@
             </tr>
           </table>
         </div>
-        <div>
-          <h2>Chọn hình thức thanh toán</h2>
-          <label for="payment">Thanh toán khi nhận hàng</label>
-          <input type="radio" name="payment" value="1" v-model="payment_id" />
-          <label for="payment">Thanh toán bằng Stripe</label>
-          <input
-            type="radio"
-            name="payment"
-            value="2"
-            v-model="payment_id"
-            @click.prevent="noServe"
-          />
+        <div class="pay">
+          <h2>Chọn hình thức thanh toán :</h2>
+          <div class="main-form-pay">
+            <div class="form-pay">
+              <input type="radio" id="payment1" value="1" v-model="payment_id" />
+              <label for="payment1">Thanh toán khi nhận hàng</label>
+            </div>
+            <div class="form-pay">
+              <input type="radio" id="payment2" value="2" v-model="payment_id" @click.prevent="noServe"/>
+              <label for="payment2">Thanh toán bằng Stripe</label>
+            </div>
+          </div>
+          
         </div>
       </div>
 
       <div class="sidebar__right">
-        <div class="address" v-if="addr.address.length > 0">
+        <!-- <div class="address" v-if="addr.address.length > 0">
           <div class="address__title">
             <p>Địa chỉ giao hàng</p>
             <button>Sửa</button>
@@ -65,7 +66,26 @@
             </span>
             <span>Điện thoại: {{ addr.default[0].phone_number }}</span>
           </div>
+        </div> -->
+
+        <div class="address">
+          <div class="address__title">
+            <p>Giao tới :</p>
+            <button>Sửa</button>
+          </div>
+          <div class="addressd__detail">
+            <div class="who">
+              <h2>ngo ba kha</h2>
+              <span>Điện thoại : 0123456789</span>
+            </div>
+            <span>
+              Địa chỉ : Duong phu dong thien vuong phuong 8 tp dalat
+            </span>
+            
+          </div>
         </div>
+
+
         <div class="price">
           <div class="pro">
             <div class="km">
@@ -76,7 +96,6 @@
                   <i class="fa fa-exclamation-circle"></i>
                 </p>
               </div>
-
               <router-link to="#">
                 <i class="fa fa-pencil-square-o"></i>
                 Nhập khuyến mãi
@@ -106,6 +125,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
