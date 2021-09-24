@@ -10,6 +10,14 @@ import { getCartID } from '@/common/jwt.service'
 const state = {
   cart: [],
   amount: 0,
+  total: 0,
+}
+const getters = {
+  getTotal: state => {
+    state.cart.forEach(item => {
+      state.total += item.quantity * item.price
+    })
+  },
 }
 const actions = {
   async [FETCH_CART]({ commit }) {
@@ -87,6 +95,7 @@ const mutations = {
 
 export default {
   state,
+  getters,
   actions,
   mutations,
 }

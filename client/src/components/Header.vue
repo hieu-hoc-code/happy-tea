@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <div class="drop-cart">
+      <div class="drop-cart" @mouseover="getTotal">
         <router-link :to="{ name: 'cart' }" class="cart">
           <div class="img-card">
             <img :src="cartIcon" />
@@ -76,10 +76,35 @@
           <p class="corner">{{ cart.amount }}</p>
         </router-link>
         <div class="dropdown-cart">
-          <div class="content-drop-cart">
-            <span>aaaaaaaaaa</span>
-            <span>bbbbbbbbbb</span>
-            <span>cccccccccc</span>
+          <div>
+            <div class="dropdown__cart">
+              Giỏ hàng ({{ cart.amount }} sản phẩm)
+            </div>
+            <div class="dropdown__wrapper">
+              <div v-for="c in cart.cart" :key="c.id" class="dropcart__content">
+                <img src="@/assets/image/nui.jpg" alt="" />
+                <div class="product__detail">
+                  <span class="product__detail_name">{{ c.name }}</span>
+                  <div class="product__price">
+                    <span class="product_price__quantity">
+                      x{{ c.quantity }}
+                    </span>
+                    <span class="product__price_total">
+                      {{ c.quantity * c.price }}00đ
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown__footer">
+              <div class="dropcart__total">
+                Tổng cộng:
+                <span>{{ cart.total }}00đ</span>
+              </div>
+              <div class="dropcart__tocart">
+                <router-link :to="{ name: 'cart' }">Xem giỏ hàng</router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -134,6 +159,9 @@ export default {
       : (this.routerControl = { name: 'me' })
   },
   methods: {
+    getTotal() {
+      this.$store.getters.getTotal
+    },
     async logout() {
       const isSuccess = await this.$store.dispatch(LOGOUT)
       if (isSuccess && this.$route.path !== '/') {
