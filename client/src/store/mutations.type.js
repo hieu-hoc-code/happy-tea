@@ -25,6 +25,7 @@ export const ADD_CATALOG = 'addCatalog'
 export const SET_CART = 'setCart'
 export const SET_CART_ITEM = 'setCartItem'
 export const REMOVE_CART = 'removeCart'
+export const SET_CURRENT_SELECTED = 'set_current_selected'
 
 // address
 export const SET_ADDRESS = 'setAddress'
@@ -32,4 +33,3 @@ export const SET_ADDRESS = 'setAddress'
 // order
 export const SET_ORDER = 'setOrder'
 export const SET_ORDER_DETAIL = 'setOrderDetail'
-

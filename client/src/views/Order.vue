@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="order">
-            <button @click="checkout">Đặt hàng</button>
+            <button @click="checkoutOrder">Đặt mua</button>
           </div>
         </div>
       </div>
@@ -111,9 +111,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import {
-  UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
   CREATE_ORDER,
   FETCH_ADDRESS,
@@ -140,27 +139,19 @@ export default {
     this.$store.dispatch(FETCH_ADDRESS)
   },
   methods: {
-    ...mapActions(['updateOrder', 'createOrder']),
-    addToCart(product_id, quantity) {
-      let product = { product_id: product_id, quantity: quantity + 1 }
-      this.$store.dispatch(UPDATE_CART_ITEM, product)
-    },
-    subToCart(product_id, quantity, id) {
-      if (quantity > 1) {
-        let product = { product_id: product_id, quantity: quantity - 1 }
-        this.$store.dispatch(UPDATE_CART_ITEM, product)
-      } else {
-        this.removeToCart(id)
-      }
-    },
-    removeToCart(id) {
-      this.$store.dispatch(REMOVE_CART_ITEM, id)
-    },
-    checkout() {
-      this.order.address_id = this.addr.default[0].id
-      const isSuccess = this.$store.dispatch(CREATE_ORDER)
+    async checkoutOrder() {
+      console.log('vao day')
+      // this.order.address_id = this.addr.default[0].id
+      const isSuccess = await this.$store.dispatch(CREATE_ORDER)
       if (isSuccess) {
         let message = 'Đặt hàng thành công <3'
+        this.$store.dispatch(CREATE_MESSAGE, message)
+        this.carts.currentSelected.forEach(id => {
+          this.$store.dispatch(REMOVE_CART_ITEM, id)
+        })
+        this.$router.push({ name: 'cart' })
+      } else {
+        let message = 'Đặt hàng thất bại :(('
         this.$store.dispatch(CREATE_MESSAGE, message)
       }
     },

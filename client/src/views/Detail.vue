@@ -55,7 +55,6 @@
         <div class="related-sp">
           <img :src="related" />
           <p>Không có sản phẩm liên quan</p>
-          <p>{{ cart }}</p>
         </div>
       </div>
     </div>
@@ -104,25 +103,33 @@ export default {
       this.quantity = this.quantity + 1
     },
     addToCart() {
+      console.log('vao day 1')
       let id = parseInt(this.$route.params.id)
       let isInCart = false
       this.cart.forEach(c => {
         if (c.product_id === id) {
+          console.log('vao day 2')
           let quantity = parseInt(c.quantity) + this.quantity
           let product = {
             product_id: id,
             quantity: quantity,
           }
           const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-          if (isSuccess) this.$store.dispatch(FETCH_CART)
+          if (isSuccess) {
+            console.log('vao day 3')
+            return this.$store.dispatch(FETCH_CART)
+          }
           return (isInCart = true)
         }
         if (isInCart) return
       })
+      console.log('vao day 4')
       if (isInCart) return
       let product = { product_id: id, quantity: this.quantity }
       const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-      if (isSuccess) this.$store.dispatch(FETCH_CART)
+      if (isSuccess) {
+        return this.$store.dispatch(FETCH_CART)
+      }
     },
   },
 }

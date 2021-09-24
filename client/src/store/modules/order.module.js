@@ -54,10 +54,11 @@ const actions = {
       const response = await OrderService.createOrder(payload)
       console.log(response)
       commit(SET_ORDER)
+      return true
     } else {
-      console.log('vao day')
       let msg = 'Vui lòng chọn sản phẩm bạn muốn mua'
       commit(ADD_MSG, msg)
+      return false
     }
   },
 }

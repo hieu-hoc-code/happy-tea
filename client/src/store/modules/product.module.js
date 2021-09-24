@@ -75,7 +75,6 @@ const actions = {
   async [FETCH_A_PRODUCT]({ commit }, id) {
     try {
       const response = await ProductService.fetchAProduct(id)
-      console.log('vao roi ne: ', response.data)
       commit(SET_PRODUCT_DETAIL, response.data)
       return true
     } catch (err) {

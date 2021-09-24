@@ -21,6 +21,7 @@ export const UPDATE_CATALOG = 'updateCatalog'
 export const FETCH_CART = 'fetchCart'
 export const UPDATE_CART_ITEM = 'updateCartItem'
 export const REMOVE_CART_ITEM = 'removeCartItem'
+export const ADD_CURRENT_SELECTED = 'addCurrentSelected'
 
 // order
 export const FETCH_ODER = 'fetchOrder'
