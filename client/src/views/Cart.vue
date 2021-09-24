@@ -5,7 +5,7 @@
         <div class="cart">
           <h2>Giỏ hàng ({{ carts.amount }})</h2>
         </div>
-        <div class="product">
+        <div>
           
           <div>
             <div class="title product">
@@ -16,6 +16,7 @@
               <div class="total">thành tiền</div>
               <div class="remove">Xóa</div>
             </div>
+
             <div v-for="cart in carts.cart" :key="cart.id" class="product">
               <div class="buy">
                 <input
@@ -31,20 +32,20 @@
                 <span>{{ cart.name }}</span>
                 </div>
               
-              <div>{{ priceMod(cart.price) }}</div>
-              <div>
+              <div  class="single-price">{{ priceMod(cart.price) }}</div>
+              <div class="quantity">
                 <i
                   class="fa fa-caret-left"
                   @click="subToCart(cart.product_id, cart.quantity, cart.id)"
                 ></i>
-                <span>{{ cart.quantity }}</span>
+                <span >{{ cart.quantity }}</span>
                 <i
                   class="fa fa-caret-right"
                   @click="addToCart(cart.product_id, cart.quantity)"
                 ></i>
               </div>
-              <div>{{ priceMod(cart.quantity * cart.price) }}</div>
-              <div>
+              <div  class="total">{{ priceMod(cart.quantity * cart.price) }}</div>
+              <div class="remove">
                 <button @click="removeToCart(cart.id)">xóa</button>
               </div>
             </div>
@@ -148,6 +149,7 @@ export default {
 @import '@/scss/variables';
 
 .main {
+  font-family: 'Quicksand';
   background-color: $content-bg-color;
   .container {
     font-size: 16px;
@@ -170,26 +172,95 @@ export default {
         }
       }
       .product.title {
-        font-size: 20px;
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 20px;
+        height: 54px;
+        .img{
+          text-align: left;
+        }
+         .single-price, .quantity, .total, .remove {
+          width: 15%;
+          line-height: 24px;
+          font-size: 16px;
+          padding-top: 0;
+        }
       }
 
       .product {
-        padding: $space-bar 0;
+        margin-bottom: 10px;
+        padding: 15px 0;
         background-color: white;
         border-radius: 8px;
         display: flex;
         flex-direction: row;
+        justify-content: space-around;
+        text-align: left;
+        padding-left: 15px;
+        box-shadow: 1px 3px 3px rgb(226, 226, 226);
         img{
-          width: 130px;
-          height: 130px;
+          width: 106px;
         }
         .buy {
-          width: 80px;
+          width: 10%;
+          input {
+            margin-left: 20px;
+            margin-top: 45px;
+            width: 20px;
+            height: 20px;
+          }
         }
 
+       
         .img {
-          width: 200px
+          text-align: left;
+          width: 30%;
+          height: 106px;   
+          span {
+            font-size: 16px;
+            font-weight: 600;
+            padding-left: 16px;
+            vertical-align: top;
+          }    
         }
+
+        .single-price, .quantity, .total, .remove {
+          width: 15%;
+          padding-top: 40px;
+        }
+
+        .single-price, .total {
+          font-weight: 600;
+          font-size: 18px;
+          color: black;
+        }
+
+        .quantity {
+          font-size: 20px;
+          i{
+            padding: 8px;
+          }
+        }
+        .remove {
+          padding-left: 40px;
+          button {
+            margin-left: -10px;
+            font-size: 16px;
+            font-weight: 600;
+            color:rgb(216, 74, 74);
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 2px 20px;
+            background: white;
+            font-family: 'Quicksand';
+            transition: all 0.3s linear;
+            &:hover {
+              color: white;
+              background: rgb(216, 74, 74);
+            }
+          }
+        }
+        
         
       }
     }
@@ -254,6 +325,7 @@ export default {
               }
             }
             tr.sum {
+              color:black;
               font-weight: bold;
             }
           }
@@ -273,13 +345,15 @@ export default {
           border-radius: $border-radius;
           box-shadow: 2px 2px 2px #aaa;
           text-transform: uppercase;
-          background-image: linear-gradient(
-            to right,
-            rgb(252, 231, 234),
-            $app-bg-color
-          );
+          
+          font-weight: bolder;
+          font-size: 16px;
+          color: white;
+          background-color: $app-bg-color;
+          transition: background-color 0.3s linear;
+          font-family: 'Quicksand';
           &:hover {
-            font-weight: bold;
+            background: #e5858d!important;
           }
           &:active {
             transform: translateY(3px);
