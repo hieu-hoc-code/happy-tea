@@ -78,7 +78,7 @@ func Init() {
 
 	// address
 	router.HandleFunc("/api/address", controllers.CreateAddress).Methods("POST")
-	router.HandleFunc("/api/address", controllers.GetAddress).Queries("user_id", "{user_id}").Methods("GET")
+	router.HandleFunc("/api/address", controllers.GetAddress).Methods("GET")
 	router.HandleFunc("/api/address", controllers.UpdateAddress).Methods("PUT")
 	router.HandleFunc("/api/address", controllers.DeleteAddress).Queries("id", "{id}", "user_id", "{user_id}").Methods("DELETE")
 

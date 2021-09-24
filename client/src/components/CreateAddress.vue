@@ -95,7 +95,6 @@ export default {
   data() {
     return {
       form: {
-        user_id: '',
         name: 'name',
         company: '',
         phone_number: '',
@@ -135,7 +134,7 @@ export default {
         isSuccess = await this.$store.dispatch(EDIT_ADDRESS, payload)
       }
       if (isSuccess) {
-        this.$store.dispatch(FETCH_ADDRESS, { user_id: this.user.userid })
+        this.$store.dispatch(FETCH_ADDRESS)
         this.$emit('send')
       }
     },

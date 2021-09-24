@@ -262,11 +262,16 @@
         }
       }
       p.corner {
-        transform: translate(0, -15px);
+        transform: translate(-10px, -13px);
         padding: 0 5px;
+        width: 20px;
+        height: 20px;
+        font-size: 0.8rem;
+        text-align: center;
         border-radius: 50%;
-        color: red;
-        background-color: rgb(252, 226, 209);
+        color: #fff;
+        background-color: #ff929b;
+        border: 1px solid #f5b0b0;
       }
       &:hover {
         font-weight: bold;
