@@ -23,9 +23,9 @@ export const UPDATE_CART_ITEM = 'updateCartItem'
 export const REMOVE_CART_ITEM = 'removeCartItem'
 
 // order
-export const FETCH_ODER= 'fetchOrder'
+export const FETCH_ODER = 'fetchOrder'
 export const CREATE_ORDER = 'createOrder'
-export const CREATE_RATE = "createRate"
+export const CREATE_RATE = 'createRate'
 
 export const FETCH_ORDER_DETAIL = 'fetchOrderDetail'
 
@@ -40,3 +40,6 @@ export const EDIT_ADDRESS = 'editAddress'
 
 // user
 export const UPLOAD_IMAGE = 'uploadImage'
+
+// message
+export const CREATE_MESSAGE = 'createMessage'

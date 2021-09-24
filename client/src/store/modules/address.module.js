@@ -9,17 +9,20 @@ import AddressService from '@/common/address.service'
 
 const state = {
   address: [],
+  default: null,
 }
 
 const actions = {
-  async [FETCH_ADDRESS]({ commit }, user_id) {
+  async [FETCH_ADDRESS]({ commit }) {
     try {
-      const response = await AddressService.getAddress(user_id)
+      const response = await AddressService.getAddress()
 
       const data = response.data
       commit(SET_ADDRESS, data)
+      return true
     } catch (err) {
       console.log(err)
+      return false
     }
   },
   async [CREATE_ADDRESS]({ commit }, payload) {
@@ -63,6 +66,7 @@ const actions = {
 const mutations = {
   [SET_ADDRESS](state, data) {
     state.address = data
+    state.default = data.filter(item => item.official === true)
   },
 }
 

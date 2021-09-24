@@ -3,8 +3,7 @@
     <div class="container">
       <div class="product-content">
         <div class="cart">
-          <h2>Giỏ hàng ({{ carts.amount }})</h2>
-          {{ order }}
+          <h2>Giỏ hàng ({{ carts.amount }}sản phẩm)</h2>
         </div>
         <div class="product">
           <table>
@@ -16,7 +15,7 @@
               <td>thành tiền</td>
             </tr>
             <tr
-              v-for="product in order.order"
+              v-for="product in order.orders"
               :key="product.id"
               class="product"
             >
@@ -30,44 +29,81 @@
             </tr>
           </table>
         </div>
+        <div>
+          <h2>Chọn hình thức thanh toán</h2>
+          <label for="payment">Thanh toán khi nhận hàng</label>
+          <input type="radio" name="payment" value="1" v-model="payment_id" />
+          <label for="payment">Thanh toán bằng Stripe</label>
+          <input
+            type="radio"
+            name="payment"
+            value="2"
+            v-model="payment_id"
+            @click.prevent="noServe"
+          />
+        </div>
       </div>
-      <div class="price">
-        <div class="pro">
-          <div class="km">
-            <div class="km-happytea">
-              <span>Khuyến mãi</span>
-              <p>
-                Có thể chọn 2
-                <i class="fa fa-exclamation-circle"></i>
-              </p>
-            </div>
 
-            <router-link to="#">
-              <i class="fa fa-pencil-square-o"></i>
-              Nhập khuyến mãi
-            </router-link>
+      <div class="sidebar__right">
+        <div class="address" v-if="addr.address.length > 0">
+          <div class="address__title">
+            <p>Địa chỉ giao hàng</p>
+            <button>Sửa</button>
+          </div>
+          <div class="addressd__detail">
+            <h2>{{ addr.default[0].name }}</h2>
+            <span>
+              {{
+                addr.default[0].address +
+                ', ' +
+                addr.default[0].village +
+                ', ' +
+                addr.default[0].district +
+                ', ' +
+                addr.default[0].province
+              }}
+            </span>
+            <span>Điện thoại: {{ addr.default[0].phone_number }}</span>
           </div>
         </div>
-        <div class="bill">
-          <div class="bill-content">
-            <table>
-              <tr>
-                <td>Tạm tính :</td>
-                <td>{{ order.total }}đ</td>
-              </tr>
-              <tr>
-                <td>Giảm giá :</td>
-                <td>0đ</td>
-              </tr>
-              <tr class="sum">
-                <td>Tổng cộng :</td>
-                <td>{{ order.total }}đ</td>
-              </tr>
-            </table>
+        <div class="price">
+          <div class="pro">
+            <div class="km">
+              <div class="km-happytea">
+                <span>Khuyến mãi</span>
+                <p>
+                  Có thể chọn 2
+                  <i class="fa fa-exclamation-circle"></i>
+                </p>
+              </div>
+
+              <router-link to="#">
+                <i class="fa fa-pencil-square-o"></i>
+                Nhập khuyến mãi
+              </router-link>
+            </div>
           </div>
-        </div>
-        <div class="order">
-          <button @click="checkout">Đặt hàng</button>
+          <div class="bill">
+            <div class="bill-content">
+              <table>
+                <tr>
+                  <td>Tạm tính :</td>
+                  <td>{{ order.total }}đ</td>
+                </tr>
+                <tr>
+                  <td>Giảm giá :</td>
+                  <td>0đ</td>
+                </tr>
+                <tr class="sum">
+                  <td>Tổng cộng :</td>
+                  <td>{{ order.total }}đ</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="order">
+            <button @click="checkout">Đặt hàng</button>
+          </div>
         </div>
       </div>
     </div>
@@ -79,21 +115,29 @@ import { mapState, mapActions } from 'vuex'
 import {
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
-  CREATE_ORDER
+  CREATE_ORDER,
+  FETCH_ADDRESS,
 } from '@/store/actions.type'
 import sp1 from '@/assets/image/sp1.jpg'
+import { CREATE_MESSAGE } from '../store/actions.type'
 export default {
   name: 'Checkout',
   data() {
     return {
       sp1,
+      default: null,
+      payment_id: 1,
     }
   },
   computed: {
     ...mapState({
       carts: state => state.cart,
       order: state => state.order,
+      addr: state => state.address,
     }),
+  },
+  created() {
+    this.$store.dispatch(FETCH_ADDRESS)
   },
   methods: {
     ...mapActions(['updateOrder', 'createOrder']),
@@ -113,165 +157,21 @@ export default {
       this.$store.dispatch(REMOVE_CART_ITEM, id)
     },
     checkout() {
-      this.$store.dispatch(CREATE_ORDER)
+      this.order.address_id = this.addr.default[0].id
+      const isSuccess = this.$store.dispatch(CREATE_ORDER)
+      if (isSuccess) {
+        let message = 'Đặt hàng thành công <3'
+        this.$store.dispatch(CREATE_MESSAGE, message)
+      }
+    },
+    noServe() {
+      let message = 'Chức năng năng này đang được update!'
+      this.$store.dispatch(CREATE_MESSAGE, message)
+      this.order.address_id = 0
     },
   },
 }
 </script>
 <style lang="scss" scoped>
-@import '@/scss/variables';
-
-.main {
-  background-color: $content-bg-color;
-  .container {
-    font-size: 16px;
-    display: flex;
-    width: 90%;
-    margin: 0 auto;
-    padding: calc(#{$space-bar * 4}) 0;
-    .product-content {
-      flex: 70%;
-      display: grid;
-
-      .cart {
-        padding: $space-bar $gap;
-        margin: $gap 0;
-        border-radius: $border-radius;
-        background-color: white;
-      }
-      .product {
-        padding: $space-bar 0;
-        background-color: white;
-        table {
-          width: 100%;
-          text-align: center;
-          tr {
-            td {
-              img {
-                width: 100%;
-              }
-              span {
-                margin: 0 5px;
-              }
-              i {
-                cursor: pointer;
-              }
-            }
-            td.img {
-              width: 70px;
-            }
-          }
-          tr.title {
-            height: 40px;
-            line-height: 40px;
-            font-size: 16px;
-          }
-        }
-      }
-    }
-    .price {
-      flex: 25%;
-      background-color: white;
-      margin-left: 5%;
-      min-height: 350px;
-      border-radius: $border-radius;
-      .pro {
-        height: 30%;
-        display: flex;
-        justify-content: center;
-        .km {
-          height: 100%;
-          width: 90%;
-          grid: 20%;
-          display: grid;
-          padding: $gap;
-          border-bottom: 1px solid #bbb;
-          color: $app-main-text-color;
-          .km-happytea {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            span {
-              background-color: white;
-              display: flex;
-              border-radius: calc(#{$border-radius * 2});
-            }
-            p {
-              color: #bbb;
-            }
-          }
-
-          a {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: rgb(104, 104, 255);
-            i {
-              margin-right: 5px;
-            }
-            &:hover {
-              cursor: pointer;
-              color: blue;
-            }
-          }
-        }
-      }
-      .bill {
-        height: 50%;
-        .bill-content {
-          padding: 5%;
-          height: 90%;
-          table {
-            width: 100%;
-            height: 100%;
-            tr {
-              td {
-                transform: translateY(50%);
-              }
-            }
-            tr.sum {
-              font-weight: bold;
-            }
-          }
-        }
-      }
-      .order {
-        height: 20%;
-        width: 90%;
-        display: flex;
-        align-items: center;
-        margin: auto;
-        button {
-          width: 100%;
-          height: 50%;
-          cursor: pointer;
-          border: none;
-          border-radius: $border-radius;
-          box-shadow: 2px 2px 2px #aaa;
-          text-transform: uppercase;
-          background-image: linear-gradient(
-            to right,
-            rgb(252, 231, 234),
-            $app-bg-color
-          );
-          &:hover {
-            font-weight: bold;
-          }
-          &:active {
-            transform: translateY(3px);
-            box-shadow: none;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: $screen-md) {
-  .main {
-    .container {
-      max-width: 1170px;
-    }
-  }
-}
+@import '@/scss/order.scss';
 </style>
