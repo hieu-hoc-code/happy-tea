@@ -84,7 +84,7 @@
           width: 15%;
           padding-top: 40px;
         }
-
+       
         .single-price,
         .total {
           font-weight: 600;
@@ -226,4 +226,8 @@
       max-width: 1170px;
     }
   }
+}
+
+.btn {
+  cursor: pointer;
 }

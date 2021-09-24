@@ -1,5 +1,6 @@
 const API_URL = 'http://localhost:3000'
 import axios from 'axios'
+import { FETCH_TOPPING, FETCH_BRAND } from '@/store/actions.type'
 
 axios.defaults.baseURL = API_URL
 
@@ -13,12 +14,12 @@ const state = {
 const getters = {}
 
 const actions = {
-  async fetchBrands({ commit }) {
+  async [FETCH_BRAND]({ commit }) {
     const response = axios.get('api/brands')
     const data = (await response).data
     commit('SET_BRANDS', data)
   },
-  async fetchTopping({ commit }) {
+  async [FETCH_TOPPING]({ commit }) {
     const response = axios.get('api/toppings')
     const data = (await response).data
     commit('SET_TOPPING', data)

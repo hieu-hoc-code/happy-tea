@@ -49,7 +49,7 @@ func CreateCartItem(w http.ResponseWriter, r *http.Request) {
 func GetCartItem(w http.ResponseWriter, r *http.Request) {
 	// get cart_id
 	vars := mux.Vars(r)
-	cartID, _ := strconv.Atoi(vars["cart_id"])
+	cartID, _ := strconv.Atoi(vars["id"])
 	type cartItem struct {
 		ID        uint    `json:"id"`
 		ProductID int     `json:"product_id"`
