@@ -13,26 +13,29 @@
         <div class="detail-product">
           <h2>{{ product.name }}</h2>
           <div class="price">
-            <span>{{ product.price }} 000 đ</span>
+            <span>{{ priceMod(product.price) }}</span>
             <p>{{ product.desc }}</p>
           </div>
-          <span>Số đánh giá: {{ product.numOfRate }}</span>
+          <span
+            class="rating"
+            v-html="ratingMod(product.rating, product.numOfRate)"
+          ></span>
           <div class="brand">
             <table>
               <tr>
-                <td>Thương hiệu</td>
-                <td>Sharetea</td>
+                <td>Thương Hiệu</td>
+                <td>{{ brand }}</td>
               </tr>
               <tr>
-                <td>Popping</td>
-                <td>Cà phê đen</td>
+                <td>Topping</td>
+                <td>{{ topping }}</td>
               </tr>
               <tr>
-                <td>Vận chuyển</td>
-                <td>Có</td>
+                <td>Vận Chuyển</td>
+                <td>{{ product.shipping == true ? 'có' : 'Không' }}</td>
               </tr>
               <tr>
-                <td>Đã bán</td>
+                <td>Đã Bán</td>
                 <td>113</td>
               </tr>
             </table>
@@ -52,10 +55,36 @@
       </div>
       <div class="related">
         <h4>Sản phẩm liên quan</h4>
-        <div class="related-sp">
-          <img :src="related" />
-          <p>Không có sản phẩm liên quan</p>
-          <p>{{ cart }}</p>
+        <div class="not-found" v-if="!products">
+          <div class="related-sp">
+            <img :src="related" />
+            <p>Không có sản phẩm liên quan</p>
+            <p>{{ product.categoryId }}</p>
+          </div>
+        </div>
+        <div v-else class="filter-result-body">
+          <div
+            class="card"
+            v-for="product in products"
+            :key="product.id"
+            :data-id="product.id"
+            @click="goDetailPage"
+          >
+            <div class="card-body">
+              <img :src="product.image" alt="ảnh sản phẩm" />
+              <div class="card-item card-title">{{ product.name }}</div>
+              <div class="card-item card-desc">
+                {{ descriptionMod(product.desc) }}
+              </div>
+              <div
+                class="card-item card-rating"
+                v-html="ratingMod(product.rating, product.numOfRate)"
+              ></div>
+              <div class="card-item card-price">
+                {{ priceMod(product.price) }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -68,10 +97,16 @@ import { mapState } from 'vuex'
 import Cookies from 'universal-cookie'
 
 import related from '@/assets/icon/empty.svg'
-import { FETCH_A_PRODUCT, FETCH_CART } from '../store/actions.type'
+import {
+  FETCH_A_PRODUCT,
+  FETCH_CART,
+  FETCH_PRODUCTS,
+} from '../store/actions.type'
+import methodMixins from '../mixins/methodMixin'
 
 export default {
   name: 'Detail',
+  mixins: [methodMixins],
   setup() {
     const cookies = new Cookies()
     return {
@@ -88,11 +123,46 @@ export default {
     ...mapState({
       product: state => state.product.productDetail,
       cart: state => state.cart.cart,
+      brands: state => state.shop.brands,
+      toppings: state => state.shop.toppings,
+      products: state => state.product.products,
     }),
+    brand() {
+      const brands = this.brands.slice(0)
+      const result = Array.prototype.find.call(
+        brands,
+        x => x.id === this.product.brandId,
+      )
+      if (result) {
+        return result.name
+      } else {
+        return 'Không có'
+      }
+    },
+    topping() {
+      const toppings = this.toppings.slice(0)
+      const result = Array.prototype.find.call(
+        toppings,
+        x => x.id === this.product.toppingId,
+      )
+      if (result) {
+        return result.name
+      } else {
+        return 'Không có'
+      }
+    },
   },
-  created() {
+  beforeMount() {
     const id = this.$route.params.id
     this.$store.dispatch(FETCH_A_PRODUCT, id)
+    if (!this.brands) {
+      this.$store.dispatch('fetchBrands')
+    }
+    if (!this.toppings) {
+      console.log(this.toppings)
+      this.$store.dispatch('fetchTopping')
+    }
+    this.$store.dispatch(FETCH_PRODUCTS, { categoryId: [2] })
   },
   methods: {
     sub_quantity: function () {
@@ -130,10 +200,11 @@ export default {
 <style lang="scss" scoped>
 @import '@/scss/variables';
 .cart {
+  font-family: 'Quicksand';
   background-color: $content-bg-color;
   .main-cart {
     display: grid;
-    width: 90%;
+    width: 1370px;
     margin: 0 auto;
     .path {
       display: flex;
@@ -162,6 +233,7 @@ export default {
       display: flex;
       width: 100%;
       margin: 0 auto;
+      border-radius: 16px;
 
       background-color: white;
       .img-sp {
@@ -175,37 +247,47 @@ export default {
       }
       .detail-product {
         flex: 60%;
-        padding: calc(#{$space-bar * 2});
+        padding: 40px 20px;
         display: grid;
         h2 {
+          font-weight: bold;
           font-size: calc(#{$app-font-size * 2});
           margin-bottom: $gap;
         }
+
         .price {
           display: grid;
           background-color: $content-bg-color;
           padding: $space-bar calc(#{$space-bar * 2});
-          font-size: $app-font-size;
+          font-size: 14px;
           border-radius: calc(#{$border-radius * 2});
           span {
             font-weight: bold;
             font-size: calc(#{$app-font-size * 2});
+            font-size: 30px;
+            margin: 0;
           }
         }
+
+        .rating {
+          font-size: 18px;
+        }
         span {
+          margin: 10px 0;
           display: flex;
           align-items: center;
           font-size: $app-font-size;
-          margin: $space-bar 0;
         }
         .brand {
           font-size: $app-font-size;
           padding: 0 0 $gap;
           table {
-            width: 100%;
+            width: 40%;
+            font-size: 14px;
+            color: #333;
             tr {
               display: flex;
-              padding: $gap 0;
+              padding: 8px 0;
               td {
                 flex: 50%;
               }
@@ -225,23 +307,26 @@ export default {
             }
           }
           span {
+            font-size: 18px;
+            font-weight: 600;
             margin: 0 $gap;
           }
         }
         button {
-          width: 50%;
-          text-transform: uppercase;
+          width: 40%;
           cursor: pointer;
           padding: $gap;
           border: none;
           border-radius: $border-radius;
           box-shadow: 2px 2px 2px #aaa;
-          background-image: linear-gradient(
-            $app-button-color,
-            darken($app-button-color, 15)
-          );
+
+          font-size: 16px;
+          font-family: 'Quicksand';
+          background: #ff929b;
+          color: white;
           margin-top: $gap;
           &:hover {
+            background: #f07e88;
             cursor: pointer;
             transform: scale(1.05);
             transition: 0.2s;
@@ -252,6 +337,7 @@ export default {
     .related {
       background-color: white;
       width: 100%;
+      border-radius: 16px;
       margin: calc(#{$space-bar * 2}) auto;
       padding: calc(#{$space-bar * 3}) 0;
       h4 {
@@ -271,14 +357,51 @@ export default {
           color: $app-main-text-color;
         }
       }
+       .filter-result-body {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            .card {
+                width: 20%;
+                position: inherit;
+                .card-item {
+                    padding: 5px $gap;
+                }
+                .card-body {
+                    margin: 16px;
+                    img{
+                        width: 100%;
+                        max-height: 220px;
+                    }
+                    .card-title {
+                        text-align: left;
+                        font-weight: 600;
+                        font-size: 16px;
+                    }
+
+                    .card-desc {
+                        margin-top: -$gap;
+                        opacity: 0.5;
+                    }
+                 
+                    .card-desc, .card-rating {
+                        font-size: 14px;
+                    }
+
+                    .card-price {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.4);
+                }
+            }
+
+        }      
     }
   }
 }
-@media screen and (min-width: $screen-md) {
-  .cart {
-    .main-cart {
-      max-width: 1170px;
-    }
-  }
-}
+
 </style>

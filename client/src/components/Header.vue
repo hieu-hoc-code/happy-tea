@@ -73,7 +73,7 @@
           <div class="img-card">
             <img :src="cartIcon" />
           </div>
-          <p class="corner">{{ cart.amount }}</p>
+          <p class="corner">{{ productQuantity }}</p>
         </router-link>
         <div class="dropdown-cart">
           <div>
@@ -90,7 +90,7 @@
                       x{{ c.quantity }}
                     </span>
                     <span class="product__price_total">
-                      {{ c.quantity * c.price }}00đ
+                      {{ priceMod(c.quantity * c.price) }}
                     </span>
                   </div>
                 </div>
@@ -99,7 +99,7 @@
             <div class="dropdown__footer">
               <div class="dropcart__total">
                 Tổng cộng:
-                <span>{{ cart.total }}00đ</span>
+                <span>{{ priceMod(cart.total) }}</span>
               </div>
               <div class="dropcart__tocart">
                 <router-link :to="{ name: 'cart' }">Xem giỏ hàng</router-link>
@@ -129,8 +129,10 @@ import {
   FETCH_PRODUCTS,
 } from '@/store/actions.type'
 import Cookies from 'universal-cookie'
+import methodMixins from '../mixins/methodMixin'
 export default {
   name: 'Header',
+  mixins: [methodMixins],
   data() {
     return {
       query: '',
@@ -146,6 +148,14 @@ export default {
       user: state => state.auth.user,
       cart: state => state.cart,
     }),
+    productQuantity() {
+      const cart = this.cart.cart.slice(0)
+      let quantity = 0
+      Array.prototype.forEach.call(cart, x => {
+        quantity += x.quantity
+      })
+      return quantity
+    },
     isHome() {
       return this.$route.path === '/'
     },
@@ -155,7 +165,7 @@ export default {
     const cookie = new Cookies()
     const admin = cookie.get('admin')
     admin === 'true'
-      ? (this.routerControl = { path: 'admin' })
+      ? (this.routerControl = { path: '/admin' })
       : (this.routerControl = { name: 'me' })
   },
   methods: {
@@ -164,8 +174,11 @@ export default {
     },
     async logout() {
       const isSuccess = await this.$store.dispatch(LOGOUT)
-      if (isSuccess && this.$route.path !== '/') {
-        this.$router.push({ name: 'home' })
+      if (isSuccess) {
+        this.$store.state.cart.cart = []
+        if (this.$route.path !== '/') {
+          this.$router.push({ name: 'home' })
+        }
       }
     },
     searchProduct() {

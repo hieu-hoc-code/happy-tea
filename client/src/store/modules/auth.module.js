@@ -23,7 +23,7 @@ const state = {
   errors: null,
   user: {},
   msg: [
-    'Title này mấy đứa ơi,fdsaf dsafd afdsa fdsfds fdsfdsa fdsfdsa dsa vcvxaedsf Czsgw efsdxvc',
+    'Title này mấy đứa ơi',
   ],
 }
 

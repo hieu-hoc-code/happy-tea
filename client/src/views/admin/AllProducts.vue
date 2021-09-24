@@ -6,7 +6,7 @@
     <div class="body">
       <div v-for="product in products" :key="product.id" class="card">
         <div class="card-body">
-          <img src="../../assets/image/sp2.jpg" alt="ảnh sản phẩm" />
+          <img :src="product.image" alt="ảnh sản phẩm" />
           <div class="card-item card-title">{{ product.name }}</div>
           <div class="card-item card-desc">{{ descriptionMod(product.desc) }}</div>
           <div class="card-item card-rating" v-html="ratingMod(product.rating, product.numOfRate)"></div>
