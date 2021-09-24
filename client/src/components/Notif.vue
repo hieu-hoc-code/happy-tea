@@ -1,9 +1,13 @@
 <template>
-  <div class="notif">
-    <div class="notif__msg">
-      <i class="fa fa-info-circle"></i>
-      <div class="notif__msg-content">Success: cac kieuc con da dieu</div>
-      <i class="fa fa-remove"></i>
+  <div class="notif" v-if="msg.length > 0">
+    <div class="notif__msg" v-for="message in msg" :key="message.index">
+      <div class="notif__msg-icon">
+        <i class="fa fa-info-circle"></i>
+      </div>
+      <div class="notif__msg-content">{{ message.msg }}</div>
+      <div class="notif__msg-remove">
+        <i class="fa fa-remove"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -26,11 +30,11 @@ export default {
 
 <style lang="scss" scoped>
 @keyframes toleft {
-  from{
+  from {
     right: -30%;
     bottom: 10vh;
   }
-  to{
+  to {
     right: 1%;
     bottom: 10vh;
   }
@@ -38,29 +42,39 @@ export default {
 .notif {
   z-index: 2;
   position: fixed;
-  height: 80px;
-  animation: toleft 2s infinite;
-  i{
+  right: 1%;
+  bottom: 10vh;
+  animation: toleft 0.2s ease-in;
+  i {
     color: white;
   }
-  i.fa-info-circle{
-    font-size: 20px;
+  .notif__msg-icon {
+    display: flex;
+    justify-content: center;
+    i.fa-info-circle {
+      font-size: 20px;
+    }
   }
   .notif__msg {
     border-radius: 8px;
-    min-height: 80px;
+    padding: 10px 0;
+    min-height: 70px;
     width: 400px;
-    background: #3e8ed0;
-    display: flex;
-    justify-content: space-around;
+    background-color: #f998a0;
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
     align-items: center;
     color: white;
   }
-  i.fa-remove{
-    cursor: pointer;
-    padding: 5px 7px;
-    background-color: #3373a8;
-    border-radius: 50%;
+  .notif__msg-remove {
+    display: flex;
+    justify-content: center;
+    i.fa-remove {
+      cursor: pointer;
+      padding: 5px 7px;
+      background-color: #f998a0;
+      border-radius: 50%;
+    }
   }
 }
 </style>

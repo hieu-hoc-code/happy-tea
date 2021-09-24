@@ -3,6 +3,7 @@
     <Header v-if="isVisible" />
     <router-view />
     <Footer v-if="isVisible" />
+    <Notif />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import { CHECK_AUTHENTICATE, FETCH_CART } from '@/store/actions.type'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import Notif from './components/Notif.vue'
 export default {
   name: 'App',
   data() {
@@ -20,6 +22,7 @@ export default {
   components: {
     Header,
     Footer,
+    Notif,
   },
   beforeCreate() {
     const isSuccess = this.$store.dispatch(CHECK_AUTHENTICATE)

@@ -12,19 +12,41 @@ import (
 )
 
 func CreateAddress(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("user_id")
+	if err != nil {
+		response := map[string]string{
+			"msg": "cannot get user_id",
+		}
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(&response)
+		return
+	}
+
+	userID, _ := strconv.Atoi(cookie.Value)
+
 	var data models.Address
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		fmt.Fprintf(w, "error when body parse %v", err)
 		return
 	}
+	data.UserID = uint(userID)
 	database.DB.Create(&data)
 
 	json.NewEncoder(w).Encode(data)
 }
 
 func GetAddress(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userID := vars["user_id"]
+	cookie, err := r.Cookie("user_id")
+	if err != nil {
+		response := map[string]string{
+			"msg": "cannot get user_id",
+		}
+		w.WriteHeader(http.StatusUnauthorized)
+		json.NewEncoder(w).Encode(&response)
+		return
+	}
+
+	userID, _ := strconv.Atoi(cookie.Value)
 
 	var data []models.Address
 

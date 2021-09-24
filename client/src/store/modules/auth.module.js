@@ -4,6 +4,7 @@ import {
   LOGOUT,
   UPDATE_USER,
   UPLOAD_IMAGE,
+  CREATE_MESSAGE,
 } from '../actions.type'
 import { SET_USER, SET_ERRORS, CLEAR_AUTH, ADD_MSG } from '../mutations.type'
 import AuthService from '@/common/auth.service'
@@ -22,9 +23,7 @@ const state = {
   isAuthenticated: false,
   errors: null,
   user: {},
-  msg: [
-    'Title này mấy đứa ơi,fdsaf dsafd afdsa fdsfds fdsfdsa fdsfdsa dsa vcvxaedsf Czsgw efsdxvc',
-  ],
+  msg: [],
 }
 
 const getters = {
@@ -124,6 +123,9 @@ const actions = {
       return false
     }
   },
+  [CREATE_MESSAGE]({ commit }, message) {
+    commit(ADD_MSG, message)
+  },
 }
 
 const mutations = {
@@ -145,7 +147,15 @@ const mutations = {
     removeCartID()
   },
   [ADD_MSG](state, msg) {
-    state.msg.push(msg)
+    let index = state.msg.length
+    state.msg.push({ index: index, msg: msg })
+    setTimeout(() => {
+      if (state.msg.length <= 1) {
+        state.msg = []
+        return
+      }
+      state.msg.splice(index, 1)
+    }, 3000)
   },
 }
 
