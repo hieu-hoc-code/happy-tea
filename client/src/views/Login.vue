@@ -71,6 +71,38 @@
               </div>
             </form>
           </b-tab-item>
+
+           <b-tab-item label="Admin">
+            <form class="form-login" @submit.prevent="submit">
+              <div class="input-group">
+                <input
+                  type="email"
+                  v-model="email"
+                  placeholder="Email"
+                  name="email"
+                  required
+                />
+              </div>
+              <div class="input-group">
+                <input
+                  type="password"
+                  v-model="password"
+                  placeholder="Mật khẩu"
+                  name="password"
+                  required
+                />
+              </div>
+              <div class="error" v-for="error in errors" :key="error">
+                {{ error }}
+              </div>
+              <div class="input-group">
+                <span>Quên mật khẩu ?</span>
+              </div>
+              <div class="input-group">
+                <button class="btn-login" type="submit">Đăng nhập</button>
+              </div>
+            </form>
+          </b-tab-item>
         </b-tabs>
       </div>
     </div>

@@ -27,6 +27,8 @@ export const ADD_CURRENT_SELECTED = 'addCurrentSelected'
 export const FETCH_ODER = 'fetchOrder'
 export const CREATE_ORDER = 'createOrder'
 export const CREATE_RATE = 'createRate'
+export const UPDATE_ORDER = 'updateOrder'
+export const FETCH_ORDER = 'fetchOrder'
 
 export const FETCH_ORDER_DETAIL = 'fetchOrderDetail'
 
