@@ -44,10 +44,10 @@
             <i
               class="fa fa-caret-left"
               :disabled="quantity <= 1"
-              @click="sub_quantity"
+              @click="subQuantity"
             ></i>
             <span>{{ quantity }}</span>
-            <i class="fa fa-caret-right" @click="add_quantity"></i>
+            <i class="fa fa-caret-right" @click="addQuantity"></i>
           </div>
 
           <button @click="addToCart">Thêm vào giỏ hàng</button>
@@ -91,25 +91,20 @@
 <script>
 import { UPDATE_CART_ITEM } from '@/store/actions.type'
 import { mapState } from 'vuex'
-import Cookies from 'universal-cookie'
 
 import related from '@/assets/icon/empty.svg'
 import {
   FETCH_A_PRODUCT,
   FETCH_CART,
   FETCH_PRODUCTS,
+  FETCH_TOPPING,
+  FETCH_BRAND,
 } from '../store/actions.type'
 import methodMixins from '../mixins/methodMixin'
 
 export default {
   name: 'Detail',
   mixins: [methodMixins],
-  setup() {
-    const cookies = new Cookies()
-    return {
-      cookies,
-    }
-  },
   data() {
     return {
       quantity: 1,
@@ -153,259 +148,43 @@ export default {
     const id = this.$route.params.id
     this.$store.dispatch(FETCH_A_PRODUCT, id)
     if (!this.brands) {
-      this.$store.dispatch('fetchBrands')
+      this.$store.dispatch(FETCH_BRAND)
     }
     if (!this.toppings) {
       console.log(this.toppings)
-      this.$store.dispatch('fetchTopping')
+      this.$store.dispatch(FETCH_TOPPING)
     }
     this.$store.dispatch(FETCH_PRODUCTS, { categoryId: [2] })
   },
   methods: {
-    sub_quantity: function () {
-      if (this.quantity > 1) {
-        this.quantity = this.quantity - 1
-      }
+    subQuantity() {
+      if (this.quantity > 1) this.quantity = this.quantity - 1
     },
-    add_quantity: function () {
+    addQuantity() {
       this.quantity = this.quantity + 1
     },
-    addToCart() {
-      console.log('vao day 1')
-      let id = parseInt(this.$route.params.id)
-      let isInCart = false
-      this.cart.forEach(c => {
-        if (c.product_id === id) {
-          console.log('vao day 2')
-          let quantity = parseInt(c.quantity) + this.quantity
-          let product = {
-            product_id: id,
-            quantity: quantity,
-          }
-          const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-          if (isSuccess) {
-            console.log('vao day 3')
-            return this.$store.dispatch(FETCH_CART)
-          }
-          return (isInCart = true)
-        }
-        if (isInCart) return
+    async addToCart() {
+      // get product id
+      let productID = parseInt(this.$route.params.id)
+      let quantity = this.quantity
+
+      let isInCart = this.cart.find(item => item.product_id === productID)
+      if (isInCart) quantity += isInCart.quantity
+
+      let product = { product_id: productID, quantity: quantity }
+      const isSuccess = await this.$store.dispatch(UPDATE_CART_ITEM, product)
+      if (isSuccess) this.$store.dispatch(FETCH_CART)
+      this.scrollToTop()
+    },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
       })
-      console.log('vao day 4')
-      if (isInCart) return
-      let product = { product_id: id, quantity: this.quantity }
-      const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-      if (isSuccess) {
-        return this.$store.dispatch(FETCH_CART)
-      }
     },
   },
 }
 </script>
 <style lang="scss" scoped>
-@import '@/scss/variables';
-.cart {
-  font-family: 'Quicksand';
-  background-color: $content-bg-color;
-  .main-cart {
-    display: grid;
-    width: 1370px;
-    margin: 0 auto;
-    .path {
-      display: flex;
-      background-color: white;
-      width: 100%;
-      height: 5rem;
-      margin: $space-bar auto;
-      align-items: center;
-      font-size: $app-font-size;
-      border-radius: calc(#{$border-radius * 2});
-      a {
-        text-decoration: none;
-        color: $app-main-text-color;
-        margin: 0 $space-bar 0 calc(#{$space-bar * 3});
-        &:hover {
-          cursor: pointer;
-          color: $app-bg-color;
-        }
-      }
-      span {
-        margin: 0 $space-bar;
-        color: $app-bg-color;
-      }
-    }
-    .add-to-cart {
-      display: flex;
-      width: 100%;
-      margin: 0 auto;
-      border-radius: 16px;
-
-      background-color: white;
-      .img-sp {
-        flex: 40%;
-        padding: calc(#{$space-bar * 2});
-        border-right: 1px solid rgb(214, 214, 214);
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .detail-product {
-        flex: 60%;
-        padding: 40px 20px;
-        display: grid;
-        h2 {
-          font-weight: bold;
-          font-size: calc(#{$app-font-size * 2});
-          margin-bottom: $gap;
-        }
-
-        .price {
-          display: grid;
-          background-color: $content-bg-color;
-          padding: $space-bar calc(#{$space-bar * 2});
-          font-size: 14px;
-          border-radius: calc(#{$border-radius * 2});
-          span {
-            font-weight: bold;
-            font-size: calc(#{$app-font-size * 2});
-            font-size: 30px;
-            margin: 0;
-          }
-        }
-
-        .rating {
-          font-size: 18px;
-        }
-        span {
-          margin: 10px 0;
-          display: flex;
-          align-items: center;
-          font-size: $app-font-size;
-        }
-        .brand {
-          font-size: $app-font-size;
-          padding: 0 0 $gap;
-          table {
-            width: 40%;
-            font-size: 14px;
-            color: #333;
-            tr {
-              display: flex;
-              padding: 8px 0;
-              td {
-                flex: 50%;
-              }
-            }
-          }
-        }
-        .to-add {
-          display: flex;
-          align-items: center;
-          i {
-            font-size: $i-font-size;
-            color: $app-bg-color;
-            &:hover {
-              cursor: pointer;
-              transition: 0.2s;
-              color: darken($app-bg-color, 15);
-            }
-          }
-          span {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 $gap;
-          }
-        }
-        button {
-          width: 40%;
-          cursor: pointer;
-          padding: $gap;
-          border: none;
-          border-radius: $border-radius;
-          box-shadow: 2px 2px 2px #aaa;
-
-          font-size: 16px;
-          font-family: 'Quicksand';
-          background: #ff929b;
-          color: white;
-          margin-top: $gap;
-          &:hover {
-            background: #f07e88;
-            cursor: pointer;
-            transform: scale(1.05);
-            transition: 0.2s;
-          }
-        }
-      }
-    }
-    .related {
-      background-color: white;
-      width: 100%;
-      border-radius: 16px;
-      margin: calc(#{$space-bar * 2}) auto;
-      padding: calc(#{$space-bar * 3}) 0;
-      h4 {
-        font-size: calc(#{$app-font-size * 2});
-        color: $app-bg-color;
-        margin-left: $space-bar;
-        text-transform: uppercase;
-      }
-      .related-sp {
-        display: grid;
-        justify-content: center;
-        img {
-          width: 100%;
-        }
-        p {
-          font-size: calc(#{$app-font-size * 1.2});
-          color: $app-main-text-color;
-        }
-      }
-      .filter-result-body {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 20px;
-        .card {
-          width: 20%;
-          position: inherit;
-          .card-item {
-            padding: 5px $gap;
-          }
-          .card-body {
-            margin: 16px;
-            img {
-              width: 100%;
-              max-height: 220px;
-            }
-            .card-title {
-              text-align: left;
-              font-weight: 600;
-              font-size: 16px;
-            }
-
-            .card-desc {
-              margin-top: -$gap;
-              opacity: 0.5;
-            }
-
-            .card-desc,
-            .card-rating {
-              font-size: 14px;
-            }
-
-            .card-price {
-              font-size: 20px;
-              font-weight: 600;
-            }
-          }
-          &:hover {
-            cursor: pointer;
-            box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.4);
-          }
-        }
-      }
-    }
-  }
-}
+@import '@/scss/detail.scss';
 </style>

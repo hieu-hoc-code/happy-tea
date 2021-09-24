@@ -3,13 +3,13 @@ import {
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
   ADD_CURRENT_SELECTED,
-} from '@/store/actions.type'
+} from '../actions.type'
 import {
   SET_CART,
   SET_CART_ITEM,
   REMOVE_CART,
   SET_CURRENT_SELECTED,
-} from '@/store/mutations.type'
+} from '../mutations.type'
 import CartService from '@/common/cart.service'
 import { getCartID } from '@/common/jwt.service'
 
@@ -21,64 +21,32 @@ const state = {
 }
 const getters = {
   getTotal: state => {
-    state.total = 0;
+    state.total = 0
     state.cart.forEach(item => {
-    state.total += item.quantity * item.price
+      state.total += item.quantity * item.price
     })
   },
 }
 const actions = {
   async [FETCH_CART]({ commit }) {
-    let cartID = getCartID()
-    if (cartID) {
-      try {
-        const response = await CartService.fetchCart(cartID)
-        const cart = response.data
-        commit(SET_CART, cart)
-      } catch (err) {
-        console.log('err when fetch cart: ', err)
-      }
-    } else {
-      console.log('khong')
-    }
+    const response = await CartService.fetchCart(getCartID())
+    const cart = response.data
+    commit(SET_CART, cart)
   },
   async [UPDATE_CART_ITEM]({ commit }, product) {
-    let cartID = getCartID()
-    if (cartID) {
-      try {
-        let cartItem = {
-          cart_id: parseInt(cartID),
-          product_id: product.product_id,
-          quantity: product.quantity,
-        }
-
-        await CartService.addToCart(cartItem) //axios.post(
-
-        commit(SET_CART_ITEM, product)
-        return true
-      } catch (err) {
-        console.log('err when add cart: ', err)
-        return false
-      }
-    } else {
-      console.log('khong co cart')
+    let cartItem = {
+      cart_id: parseInt(getCartID()),
+      product_id: product.product_id,
+      quantity: product.quantity,
     }
+
+    await CartService.addToCart(cartItem)
+    commit(SET_CART_ITEM, product)
+    return true
   },
   async [REMOVE_CART_ITEM]({ commit }, id) {
-    let cartID = getCartID()
-    if (cartID) {
-      try {
-        await CartService.removeCartItem({ params: { id: id } })
-
-        commit(REMOVE_CART, id)
-        return true
-      } catch (err) {
-        console.log('err when add cart: ', err)
-        return false
-      }
-    } else {
-      console.log('khong co cart')
-    }
+    await CartService.removeCartItem(id)
+    commit(REMOVE_CART, id)
   },
   [ADD_CURRENT_SELECTED]({ commit }, currentSelected) {
     commit(SET_CURRENT_SELECTED, currentSelected)

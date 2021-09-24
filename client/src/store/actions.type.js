@@ -46,3 +46,9 @@ export const UPLOAD_IMAGE = 'uploadImage'
 
 // message
 export const CREATE_MESSAGE = 'createMessage'
+
+// topping
+export const FETCH_TOPPING = 'fetchTopping'
+
+// brand
+export const FETCH_BRAND = 'fetchBrand'

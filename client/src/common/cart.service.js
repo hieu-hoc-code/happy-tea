@@ -1,21 +1,17 @@
 import ApiService from './api.service'
 
 const CartService = {
-  fetchCart(cart_id) {
-    return ApiService.get(
-      '/api/cartitems',
-      { params: { cart_id: cart_id } },
-      { withCredentials: true },
-    )
+  fetchCart(id) {
+    return ApiService.get(`/api/cartitems/${id}`)
   },
-  addToCart(cartItem) {
-    return ApiService.post('/api/cartitems', cartItem)
+  addToCart(payload) {
+    return ApiService.post('/api/cartitems', payload)
   },
   createCart() {
     return ApiService.post('/api/cart')
   },
-  removeCartItem(product_id) {
-    return ApiService.delete('/api/cartitems', product_id)
+  removeCartItem(id) {
+    return ApiService.delete(`/api/cartitems/${id}`)
   },
 }
 

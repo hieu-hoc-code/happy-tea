@@ -76,11 +76,11 @@ const mutations = {
     payload.forEach(item => {
       state.orders.push(item.cart)
     })
-    let tmp = 0
+    let total = 0
     state.orders.forEach(item => {
-      tmp += item.price * item.quantity
+      total += item.price * item.quantity
     })
-    state.total = tmp
+    state.total = total
   },
   [SET_ORDER](state, orders) {
     state.orders = orders

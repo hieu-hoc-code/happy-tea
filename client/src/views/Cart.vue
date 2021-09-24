@@ -23,6 +23,7 @@
                   type="checkbox"
                   name="choose"
                   :value="{ cart }"
+                  class="btn"
                   @change="checkboxHandler"
                 />
               </div>
@@ -34,12 +35,12 @@
               <div class="single-price">{{ priceMod(cart.price) }}</div>
               <div class="quantity">
                 <i
-                  class="fa fa-caret-left"
+                  class="fa fa-caret-left btn"
                   @click="subToCart(cart.product_id, cart.quantity, cart.id)"
                 ></i>
                 <span>{{ cart.quantity }}</span>
                 <i
-                  class="fa fa-caret-right"
+                  class="fa fa-caret-right btn"
                   @click="addToCart(cart.product_id, cart.quantity)"
                 ></i>
               </div>
