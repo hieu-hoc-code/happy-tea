@@ -9,25 +9,24 @@
       </div>
 
       <div v-if="isAuthenticated" class="row-right">
-        <b-dropdown aria-role="list">
-          <template #trigger="{ active }">
-            <i
-              class="fa fa-user-circle-o"
+        <div class="profile">
+          <div class="profile-icon">
+            <img
+              :src="user.image"
               :icon-right="active ? 'menu-up' : 'menu-down'"
-            >
-              <span>{{ user.name }}</span>
-            </i>
-          </template>
-          <b-dropdown-item aria-role="listitem">
-            <router-link :to="routerControl">
-              Hi :
-              {{ user.name }}
-            </router-link>
-          </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">
-            <p @click="logout">Đăng xuất</p>
-          </b-dropdown-item>
-        </b-dropdown>
+            />
+          </div>
+          <div class="profile-name">
+            <span class="profile-name__note">Tài khoản:</span>
+            <span class="profile-name__name">{{ user.name }}</span>
+          </div>
+        </div>
+        <ul class="dropdown__menu_right">
+          <li class="dropdown__item">
+            <router-link :to="routerControl">Tài khoản của tôi</router-link>
+          </li>
+          <li @click="logout" class="dropdown__item">Đăng xuất</li>
+        </ul>
       </div>
 
       <div v-else class="row_right">
@@ -68,19 +67,29 @@
           </button>
         </div>
       </div>
-      <router-link :to="{ name: 'cart' }" class="cart">
-        <div class="img-card">
-          <img :src="cartIcon" />
+
+      <div class="drop-cart">
+        <router-link :to="{ name: 'cart' }" class="cart">
+          <div class="img-card">
+            <img :src="cartIcon" />
+          </div>
+          <p class="corner">{{ cart.amount }}</p>
+        </router-link>
+        <div class="dropdown-cart">
+          <div class="content-drop-cart">
+            <span>aaaaaaaaaa</span>
+            <span>bbbbbbbbbb</span>
+            <span>cccccccccc</span>
+          </div>
         </div>
-        <p class="corner">{{ cart.amount }}</p>
-      </router-link>
+      </div>
     </div>
     <div class="search-hint">
       <a href="#">Latte Sữa</a>
       <a href="#">Trà sữa hạt</a>
       <a href="#">Sữa tươi thạch</a>
       <a href="#">Sữa tươi trân châu</a>
-      <a href="#">Premium Latte</a>
+      <a href="#">Premium latte</a>
     </div>
   </header>
 </template>
@@ -102,6 +111,7 @@ export default {
       query: '',
       cartIcon,
       routerControl: '',
+      active: '',
     }
   },
   computed: {
@@ -118,8 +128,10 @@ export default {
   beforeMount() {
     this.$store.dispatch(FETCH_CATALOG)
     const cookie = new Cookies()
-    const admin = cookie.get("admin")
-    admin === "true" ? this.routerControl = {path:'/admin'} : this.routerControl = {name:'me'}
+    const admin = cookie.get('admin')
+    admin === 'true'
+      ? (this.routerControl = { path: 'admin' })
+      : (this.routerControl = { name: 'me' })
   },
   methods: {
     async logout() {
