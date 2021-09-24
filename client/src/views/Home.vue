@@ -33,7 +33,7 @@
             @click="goDetailPage"
           >
             <div class="card-body">
-              <img src="../assets/image/sp1.jpg" alt="ảnh sản phẩm" />
+              <img :src="product.image" alt="ảnh sản phẩm" />
               <div class="card-item card-title">{{ product.name }}</div>
               <div class="card-item card-desc">{{ descriptionMod(product.desc)}}</div>
               <div class="card-item card-rating" v-html="ratingMod(product.rating, product.numOfRate)"></div>
@@ -84,7 +84,7 @@
             @click="goDetailPage"
           >
             <div class="card-body">
-              <img src="../assets/image/sp1.jpg" alt="ảnh sản phẩm" />
+              <img :src="product.image" alt="ảnh sản phẩm" />
               <div class="card-item card-title">{{ product.name }}</div>
               <div class="card-item card-desc">{{ descriptionMod(product.desc)}}</div>
               <div class="card-item card-rating" v-html="ratingMod(product.rating, product.numOfRate)"></div>

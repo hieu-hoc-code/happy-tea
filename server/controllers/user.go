@@ -117,7 +117,8 @@ func UploadImageUser(w http.ResponseWriter, r *http.Request) {
 	response := map[string]string{
 		"url": url,
 	}
-
+	//clear cache
+	ClearProductCache(*database.Cache, database.Ctx)
 	json.NewEncoder(w).Encode(&response)
 }
 
@@ -237,6 +238,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		"msg":         msg,
 		"clear_token": clearToken,
 	}
+	//clear cache
+	ClearProductCache(*database.Cache, database.Ctx)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(&response)
 }

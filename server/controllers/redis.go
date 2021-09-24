@@ -1,11 +1,14 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"server/database"
 	"server/util"
+
+	"github.com/go-redis/redis/v8"
 )
 
 func VerifyCache(next http.HandlerFunc) http.HandlerFunc {
@@ -39,7 +42,11 @@ func ProductCache(next http.HandlerFunc) http.HandlerFunc {
 			next.ServeHTTP(w, r)
 			return
 		}
-		fmt.Println("ben ngoai")
+		fmt.Println("cache")
 		fmt.Fprint(w, string(products))
 	}
+}
+
+func ClearProductCache(redis redis.Client, ctx context.Context) {
+	redis.FlushAll(ctx)
 }

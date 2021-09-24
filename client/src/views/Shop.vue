@@ -46,14 +46,14 @@
             <i class="submenu-arrow"></i>
           </div>
           <div class="filter-body">
-            <div @click="filterByRate(5)">
+            <div @click="filterByRate(5)" :class="{active: filter.rating===5}">
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
             </div>
-            <div @click="filterByRate(4)">
+            <div @click="filterByRate(4)" :class="{active: filter.rating===4}">
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
@@ -61,7 +61,7 @@
               <i class="fas fa-star"></i>
               trở lên
             </div>
-            <div @click="filterByRate(3)">
+            <div @click="filterByRate(3)" :class="{active: filter.rating===3}">
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
@@ -69,7 +69,7 @@
               <i class="fas fa-star"></i>
               trở lên
             </div>
-            <div @click="filterByRate(2)">
+            <div @click="filterByRate(2)" :class="{active: filter.rating===2}">
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star"></i>
@@ -77,7 +77,7 @@
               <i class="fas fa-star"></i>
               trở lên
             </div>
-            <div @click="filterByRate(1)">
+            <div @click="filterByRate(1)" :class="{active: filter.rating===1}">
               <i class="fas fa-star yellow-star"></i>
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
@@ -163,7 +163,7 @@
         <div v-else class="filter-result-body">
           <div class="card" v-for="product in filterResult" :key="product.id" :data-id="product.id" @click="goDetailPage">
             <div class="card-body">
-               <img src="../assets/image/sp1.jpg" alt="ảnh sản phẩm" />
+               <img :src="product.image" alt="ảnh sản phẩm" />
               <div class="card-item card-title">{{ product.name }}</div>
               <div class="card-item card-desc">{{ descriptionMod(product.desc)}}</div>
               <div class="card-item card-rating" v-html="ratingMod(product.rating, product.numOfRate)"></div>

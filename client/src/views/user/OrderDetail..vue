@@ -1,5 +1,6 @@
 <template>
   <div v-if="isDetailPage" class="order-detail-container">
+    <div class="overlay" ref="overlay" @click="closeModal"></div>
     <button class="back btn" @click="back">Quay trờ lại</button>
     <table>
       <tr class="title-order">
@@ -53,7 +54,6 @@ export default {
       this.$store.state.order.isDetailPage = true
       this.$store.dispatch(FETCH_ORDER_DETAIL, this.$route.params.id)
     } else {
-      console.log("boai")
       this.$router.push({name: "history"})
     }
   },
@@ -63,6 +63,7 @@ export default {
           this.$router.push({name: "history"})
       },
       openModal(id) {
+          this.$refs.overlay.style.display = "block"
           this.$refs.modal.style.display = "block"
           this.productId = id
       },
@@ -74,6 +75,7 @@ export default {
       },
       rate() {
         this.$refs.modal.style.display = "none"
+        this.$refs.overlay.style.display = "none"
         const cookie = new Cookies()
         let payload ={
           rate : parseInt(this.dataRate),
@@ -82,6 +84,10 @@ export default {
         }
         this.$store.dispatch(CREATE_RATE, payload)
         this.dataRate = 0
+      },
+      closeModal() {
+          this.$refs.overlay.style.display = "none"
+          this.$refs.modal.style.display = "none"
       }
   }
 }
@@ -89,6 +95,16 @@ export default {
 
 <style lang="scss" scoped>
 .order-detail-container {
+  .overlay {
+    position: fixed;
+    display: none;
+    width: 1920px;
+    height: 1024px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba(1,1,1,0.1);
+  }
     position: relative;
   padding: 10px 20px;
   .btn {
