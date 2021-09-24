@@ -21,8 +21,9 @@ const state = {
 }
 const getters = {
   getTotal: state => {
+    state.total = 0;
     state.cart.forEach(item => {
-      state.total += item.quantity * item.price
+    state.total += item.quantity * item.price
     })
   },
 }

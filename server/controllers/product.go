@@ -62,6 +62,9 @@ func CreateProduct(w http.ResponseWriter, r *http.Request) {
 	es := models.NewES(conn)
 	es.Create(data)
 	json.NewEncoder(w).Encode(data)
+	//clear cache
+	ClearProductCache(*database.Cache, database.Ctx)
+
 }
 
 func formatResquestForm(i string, v []string) string {
@@ -111,6 +114,7 @@ func AllProducts(w http.ResponseWriter, r *http.Request) {
 	}
 	url := r.URL.String()
 	fmt.Println("ben trong: ")
+
 	cacheErr := database.Cache.Set(database.Ctx, url, data, 60*time.Second).Err()
 	if cacheErr != nil {
 		logrus.Error(err, nil)
@@ -191,9 +195,11 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	conn := models.ConnectES()
 	es := models.NewES(conn)
 	es.Update(data)
+	//clear cache
+	ClearProductCache(*database.Cache, database.Ctx)
 
 	json.NewEncoder(w).Encode(data)
-
+	database.Cache.FlushDB(database.Ctx)
 }
 
 func DeleteProduct(w http.ResponseWriter, r *http.Request) {
@@ -213,6 +219,9 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	es := models.NewES(conn)
 	es.Delete(data.Id)
 
+	//clear cache
+	ClearProductCache(*database.Cache, database.Ctx)
+
 	fmt.Fprintf(w, "deleted product_id: %v", id)
 }
 
@@ -227,15 +236,15 @@ func SearchProduct(w http.ResponseWriter, r *http.Request) {
 	data := es.Search(query)
 
 	json.NewEncoder(w).Encode(data)
-
-	products, err := json.Marshal(&data)
-	if err != nil {
-		logrus.Error(err)
-	}
-	url := r.URL.String()
-	fmt.Println("ben trong: ")
-	cacheErr := database.Cache.Set(database.Ctx, url, products, 60*time.Second).Err()
-	if cacheErr != nil {
-		logrus.Error(cacheErr)
-	}
+	//cache query
+	/* 	products, err := json.Marshal(&data)
+	   	if err != nil {
+	   		logrus.Error(err)
+	   	}
+	   	url := r.URL.String()
+	   	fmt.Println("ben trong: ")
+	   	cacheErr := database.Cache.Set(database.Ctx, url, products, 60*time.Second).Err()
+	   	if cacheErr != nil {
+	   		logrus.Error(cacheErr)
+	   	} */
 }
