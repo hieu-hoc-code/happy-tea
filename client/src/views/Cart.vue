@@ -89,7 +89,7 @@
           </div>
         </div>
         <div class="order">
-          <button @click="orderHandler">Đặt hàng</button>
+          <button @click="orderHandler">Tiến hành đặt hàng</button>
         </div>
       </div>
     </div>
@@ -102,6 +102,7 @@ import {
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
   CREATE_MESSAGE,
+  ADD_CURRENT_SELECTED,
 } from '@/store/actions.type'
 import sp1 from '@/assets/image/sp1.jpg'
 import methodMixins from '../mixins/methodMixin'
@@ -138,6 +139,11 @@ export default {
       this.$store.dispatch(REMOVE_CART_ITEM, id)
     },
     checkboxHandler() {
+      let currentSelected = []
+      this.ordered.forEach(item => {
+        currentSelected.push(item.cart.id)
+      })
+      this.$store.dispatch(ADD_CURRENT_SELECTED, currentSelected)
       this.updateOrder(this.ordered)
     },
     orderHandler() {

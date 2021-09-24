@@ -2,8 +2,14 @@ import {
   FETCH_CART,
   UPDATE_CART_ITEM,
   REMOVE_CART_ITEM,
+  ADD_CURRENT_SELECTED,
 } from '@/store/actions.type'
-import { SET_CART, SET_CART_ITEM, REMOVE_CART } from '@/store/mutations.type'
+import {
+  SET_CART,
+  SET_CART_ITEM,
+  REMOVE_CART,
+  SET_CURRENT_SELECTED,
+} from '@/store/mutations.type'
 import CartService from '@/common/cart.service'
 import { getCartID } from '@/common/jwt.service'
 
@@ -11,6 +17,7 @@ const state = {
   cart: [],
   amount: 0,
   total: 0,
+  currentSelected: [],
 }
 const getters = {
   getTotal: state => {
@@ -73,6 +80,9 @@ const actions = {
       console.log('khong co cart')
     }
   },
+  [ADD_CURRENT_SELECTED]({ commit }, currentSelected) {
+    commit(SET_CURRENT_SELECTED, currentSelected)
+  },
 }
 
 const mutations = {
@@ -91,6 +101,9 @@ const mutations = {
     let updateCart = state.cart.filter(p => p.id !== id)
     state.cart = updateCart
     state.amount = state.cart.length
+  },
+  [SET_CURRENT_SELECTED](state, currentSelected) {
+    state.currentSelected = currentSelected
   },
 }
 
