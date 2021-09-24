@@ -53,32 +53,33 @@
           <button @click="addToCart">Thêm vào giỏ hàng</button>
         </div>
       </div>
-      <div class="related">
+      <div v-if="product" class="related">
         <h4>Sản phẩm liên quan</h4>
         <div class="related-sp">
           <img :src="related" />
           <p>Không có sản phẩm liên quan</p>
-        <div v-else class="filter-result-body">
-          <div
-            class="card"
-            v-for="product in products"
-            :key="product.id"
-            :data-id="product.id"
-            @click="goDetailPage"
-          >
-            <div class="card-body">
-              <img :src="product.image" alt="ảnh sản phẩm" />
-              <div class="card-item card-title">{{ product.name }}</div>
-              <div class="card-item card-desc">
-                {{ descriptionMod(product.desc) }}
-              </div>
-              <div
-                class="card-item card-rating"
-                v-html="ratingMod(product.rating, product.numOfRate)"
-              ></div>
-              <div class="card-item card-price">
-                {{ priceMod(product.price) }}
-              </div>
+        </div>
+      </div>
+      <div v-else class="filter-result-body">
+        <div
+          class="card"
+          v-for="product in products"
+          :key="product.id"
+          :data-id="product.id"
+          @click="goDetailPage"
+        >
+          <div class="card-body">
+            <img :src="product.image" alt="ảnh sản phẩm" />
+            <div class="card-item card-title">{{ product.name }}</div>
+            <div class="card-item card-desc">
+              {{ descriptionMod(product.desc) }}
+            </div>
+            <div
+              class="card-item card-rating"
+              v-html="ratingMod(product.rating, product.numOfRate)"
+            ></div>
+            <div class="card-item card-price">
+              {{ priceMod(product.price) }}
             </div>
           </div>
         </div>
@@ -361,51 +362,50 @@ export default {
           color: $app-main-text-color;
         }
       }
-       .filter-result-body {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-            .card {
-                width: 20%;
-                position: inherit;
-                .card-item {
-                    padding: 5px $gap;
-                }
-                .card-body {
-                    margin: 16px;
-                    img{
-                        width: 100%;
-                        max-height: 220px;
-                    }
-                    .card-title {
-                        text-align: left;
-                        font-weight: 600;
-                        font-size: 16px;
-                    }
-
-                    .card-desc {
-                        margin-top: -$gap;
-                        opacity: 0.5;
-                    }
-                 
-                    .card-desc, .card-rating {
-                        font-size: 14px;
-                    }
-
-                    .card-price {
-                        font-size: 20px;
-                        font-weight: 600;
-                    }
-                }
-                &:hover {
-                    cursor: pointer;
-                    box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.4);
-                }
+      .filter-result-body {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        .card {
+          width: 20%;
+          position: inherit;
+          .card-item {
+            padding: 5px $gap;
+          }
+          .card-body {
+            margin: 16px;
+            img {
+              width: 100%;
+              max-height: 220px;
+            }
+            .card-title {
+              text-align: left;
+              font-weight: 600;
+              font-size: 16px;
             }
 
-        }      
+            .card-desc {
+              margin-top: -$gap;
+              opacity: 0.5;
+            }
+
+            .card-desc,
+            .card-rating {
+              font-size: 14px;
+            }
+
+            .card-price {
+              font-size: 20px;
+              font-weight: 600;
+            }
+          }
+          &:hover {
+            cursor: pointer;
+            box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.4);
+          }
+        }
+      }
     }
   }
 }
-
 </style>
