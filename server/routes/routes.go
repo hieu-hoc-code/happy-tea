@@ -26,6 +26,7 @@ func Init() {
 
 	// auth admin
 	router.HandleFunc("/api/login/admin", controllers.LoginAdmin).Methods("POST")
+	router.HandleFunc("/api/register/admin", controllers.RegisterAdmin).Methods("POST")
 	router.HandleFunc("/api/admin", middlewares.IsAuthenticated(controllers.GetAdmin)).Methods("GET")
 
 	// middleware
