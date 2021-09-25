@@ -165,7 +165,7 @@ export default {
     const cookie = new Cookies()
     const admin = cookie.get('admin')
     admin === 'true'
-      ? (this.routerControl = { path: '/admin' })
+      ? (this.routerControl = { path: 'admin' })
       : (this.routerControl = { name: 'me' })
   },
   methods: {

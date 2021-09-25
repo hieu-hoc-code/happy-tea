@@ -145,10 +145,32 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logrus.Error(err)
 		json.NewEncoder(w).Encode(err)
+
+		var data models.Product
+		if err := json.Unmarshal([]byte(r.FormValue("newProduct")), &data); err != nil {
+			logrus.Error(err)
+			json.NewEncoder(w).Encode(err)
+			return
+		}
+
+		database.DB.Model(&data).Updates(data)
+		if err := json.NewEncoder(w).Encode(data); err != nil {
+			logrus.Info("send response false")
+			json.NewEncoder(w).Encode("send response false")
+			return
+		}
+		// create es
+		conn := models.ConnectES()
+		es := models.NewES(conn)
+		es.Update(data)
+		//clear cache
+		ClearProductCache(*database.Cache, database.Ctx)
+
+		json.NewEncoder(w).Encode(data)
+		database.Cache.FlushDB(database.Ctx)
 		return
 	}
 	defer file.Close()
-
 	tempFile, err := ioutil.TempFile("static/product", "product-*.jpg")
 	if err != nil {
 		logrus.Error(err)

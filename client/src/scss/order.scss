@@ -12,15 +12,18 @@
       flex: 70%;
       //display: grid;
       .cart {
-        height: 20%;
         padding: $space-bar $gap;
         border-radius: $border-radius;
         background-color: white;
         margin-bottom: 2%;
+        h2 {
+          font-weight: bolder;
+          font-size: 20px;
+        }
       }
       .product {
-        height: 55%;
-        padding: $space-bar 0;
+        padding: $space-bar 10px;
+        border-radius: 8px;
         background-color: white;
         box-shadow: 0 0 3px #bbb;
         table {
@@ -67,6 +70,9 @@
             }
             input{
               margin-right: $gap;
+              &:hover {
+                cursor: pointer;
+              }
             }
           }
         }
@@ -86,10 +92,6 @@
         .address__title{
           display: flex;
           justify-content: space-between;
-          
-          p{
-            //font-weight: bold;
-          }
           button{
             border: none;
             color: #333;
@@ -198,13 +200,15 @@
             border-radius: $border-radius;
             box-shadow: 2px 2px 2px #aaa;
             text-transform: uppercase;
-            background-image: linear-gradient(
-              to right,
-              rgb(252, 231, 234),
-              $app-bg-color
-            );
+            font-weight: bolder;
+            font-size: 16px;
+            color: white;
+            background-color: $app-bg-color;
+            transition: background-color 0.3s linear;
+            font-family: 'Quicksand';
             &:hover {
-              font-weight: bold;
+              cursor: pointer;
+              background: #e5858d !important;
             }
             &:active {
               transform: translateY(3px);

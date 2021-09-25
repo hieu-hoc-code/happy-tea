@@ -3,7 +3,7 @@
     <div class="container">
       <div class="product-content">
         <div class="cart">
-          <h2>Giỏ hàng ({{ carts.amount }}sản phẩm)</h2>
+          <h2>Giỏ hàng ( {{ carts.amount }} sản phẩm )</h2>
         </div>
         <div class="product">
           <table>
@@ -19,13 +19,13 @@
               :key="product.id"
               class="product"
             >
-              <td class="img"><img :src="sp1" alt="Hinh anh" /></td>
+              <td class="img"><img :src="product.image" alt="Hinh anh" /></td>
               <td>{{ product.name }}</td>
-              <td>{{ product.price }}</td>
+              <td>{{ priceMod(product.price) }}</td>
               <td>
                 <span>{{ product.quantity }}</span>
               </td>
-              <td>{{ product.quantity * product.price }}</td>
+              <td>{{ priceMod(product.quantity * product.price) }}</td>
             </tr>
           </table>
         </div>
@@ -102,7 +102,7 @@
               <table>
                 <tr>
                   <td>Tạm tính :</td>
-                  <td>{{ order.total }}đ</td>
+                  <td>{{ priceMod(order.total) }}</td>
                 </tr>
                 <tr>
                   <td>Giảm giá :</td>
@@ -110,7 +110,7 @@
                 </tr>
                 <tr class="sum">
                   <td>Tổng cộng :</td>
-                  <td>{{ order.total }}đ</td>
+                  <td>{{ priceMod(order.total) }}</td>
                 </tr>
               </table>
             </div>
@@ -133,8 +133,10 @@ import {
 } from '@/store/actions.type'
 import sp1 from '@/assets/image/sp1.jpg'
 import { CREATE_MESSAGE } from '../store/actions.type'
+import methodMixins from '../mixins/methodMixin'
 export default {
   name: 'Checkout',
+  mixins: [methodMixins],
   data() {
     return {
       sp1,
