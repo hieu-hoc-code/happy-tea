@@ -162,6 +162,7 @@ func RegisterAdmin(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintf(w, "Đăng ký tài khoản admin thành công <3")
 }
+
 func LoginAdmin(w http.ResponseWriter, r *http.Request) {
 	var data map[string]string
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
