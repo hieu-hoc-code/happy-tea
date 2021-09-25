@@ -3,6 +3,8 @@ export const LOGIN = 'login'
 export const CHECK_AUTHENTICATE = 'checkAuthenticate'
 export const LOGOUT = 'logOut'
 export const UPDATE_USER = 'updateUser'
+export const REGISTER = 'register'
+export const LOGIN_ADMIN = 'loginAdmin'
 
 // product
 export const SEARCH_PRODUCT = 'searchProduct'
@@ -27,6 +29,8 @@ export const ADD_CURRENT_SELECTED = 'addCurrentSelected'
 export const FETCH_ODER = 'fetchOrder'
 export const CREATE_ORDER = 'createOrder'
 export const CREATE_RATE = 'createRate'
+export const UPDATE_ORDER = 'updateOrder'
+export const FETCH_ORDER = 'fetchOrder'
 
 export const FETCH_ORDER_DETAIL = 'fetchOrderDetail'
 
@@ -44,3 +48,9 @@ export const UPLOAD_IMAGE = 'uploadImage'
 
 // message
 export const CREATE_MESSAGE = 'createMessage'
+
+// topping
+export const FETCH_TOPPING = 'fetchTopping'
+
+// brand
+export const FETCH_BRAND = 'fetchBrand'

@@ -33,27 +33,41 @@
           <h2>Chọn hình thức thanh toán :</h2>
           <div class="main-form-pay">
             <div class="form-pay">
-              <input type="radio" id="payment1" value="1" v-model="payment_id" />
+              <input
+                type="radio"
+                id="payment1"
+                value="1"
+                v-model="payment_id"
+              />
               <label for="payment1">Thanh toán khi nhận hàng</label>
             </div>
             <div class="form-pay">
-              <input type="radio" id="payment2" value="2" v-model="payment_id" @click.prevent="noServe"/>
+              <input
+                type="radio"
+                id="payment2"
+                value="2"
+                v-model="payment_id"
+                @click.prevent="noServe"
+              />
               <label for="payment2">Thanh toán bằng Stripe</label>
             </div>
           </div>
-          
         </div>
       </div>
 
       <div class="sidebar__right">
-        <!-- <div class="address" v-if="addr.address.length > 0">
+        <div class="address" v-if="addr.address.length > 0">
           <div class="address__title">
-            <p>Địa chỉ giao hàng</p>
+            <p>Giao tới :</p>
             <button>Sửa</button>
           </div>
           <div class="addressd__detail">
-            <h2>{{ addr.default[0].name }}</h2>
+            <div class="who">
+              <h2>{{ addr.default[0].name }}</h2>
+              <span>Điện thoại : {{ addr.default[0].phone_number }}</span>
+            </div>
             <span>
+              Địa chỉ :
               {{
                 addr.default[0].address +
                 ', ' +
@@ -64,27 +78,8 @@
                 addr.default[0].province
               }}
             </span>
-            <span>Điện thoại: {{ addr.default[0].phone_number }}</span>
-          </div>
-        </div> -->
-
-        <div class="address">
-          <div class="address__title">
-            <p>Giao tới :</p>
-            <button>Sửa</button>
-          </div>
-          <div class="addressd__detail">
-            <div class="who">
-              <h2>ngo ba kha</h2>
-              <span>Điện thoại : 0123456789</span>
-            </div>
-            <span>
-              Địa chỉ : Duong phu dong thien vuong phuong 8 tp dalat
-            </span>
-            
           </div>
         </div>
-
 
         <div class="price">
           <div class="pro">
@@ -161,7 +156,6 @@ export default {
   },
   methods: {
     async checkoutOrder() {
-      console.log('vao day')
       // this.order.address_id = this.addr.default[0].id
       const isSuccess = await this.$store.dispatch(CREATE_ORDER)
       if (isSuccess) {
@@ -170,7 +164,7 @@ export default {
         this.carts.currentSelected.forEach(id => {
           this.$store.dispatch(REMOVE_CART_ITEM, id)
         })
-        this.$router.push({ name: 'cart' })
+        this.$router.push({ name: 'home' })
       } else {
         let message = 'Đặt hàng thất bại :(('
         this.$store.dispatch(CREATE_MESSAGE, message)

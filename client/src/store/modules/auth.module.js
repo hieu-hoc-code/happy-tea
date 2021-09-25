@@ -5,6 +5,8 @@ import {
   UPDATE_USER,
   UPLOAD_IMAGE,
   CREATE_MESSAGE,
+  REGISTER,
+  LOGIN_ADMIN,
 } from '../actions.type'
 import { SET_USER, SET_ERRORS, CLEAR_AUTH, ADD_MSG } from '../mutations.type'
 import AuthService from '@/common/auth.service'
@@ -51,6 +53,25 @@ const actions = {
         saveCartID(res.data)
       }
       let str = `Hi ${data.name}, have a good day`
+      commit(ADD_MSG, str)
+      return true
+    } catch (err) {
+      commit(SET_ERRORS, err.response.data.errors)
+      return false
+    }
+  },
+  async [LOGIN_ADMIN]({ commit }, user) {
+    try {
+      const response = await AuthService.loginAdmin(user)
+      const data = response.data
+      commit(SET_USER, data)
+      // check cart
+      let cartID = getCartID()
+      if (!cartID || cartID !== data.cart_id) {
+        const res = await CartService.createCart()
+        saveCartID(res.data)
+      }
+      let str = `Hi admin ${data.name}, have a good day`
       commit(ADD_MSG, str)
       return true
     } catch (err) {
@@ -125,6 +146,17 @@ const actions = {
   },
   [CREATE_MESSAGE]({ commit }, message) {
     commit(ADD_MSG, message)
+  },
+  async [REGISTER]({ commit }, user) {
+    try {
+      const response = await AuthService.register(user)
+      const data = response.data
+      commit(ADD_MSG, data)
+      return true
+    } catch (err) {
+      commit(ADD_MSG, err)
+      return false
+    }
   },
 }
 

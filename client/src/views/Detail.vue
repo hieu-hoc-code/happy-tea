@@ -44,10 +44,10 @@
             <i
               class="fa fa-caret-left"
               :disabled="quantity <= 1"
-              @click="sub_quantity"
+              @click="subQuantity"
             ></i>
             <span>{{ quantity }}</span>
-            <i class="fa fa-caret-right" @click="add_quantity"></i>
+            <i class="fa fa-caret-right" @click="addQuantity"></i>
           </div>
 
           <button @click="addToCart">Thêm vào giỏ hàng</button>
@@ -91,25 +91,20 @@
 <script>
 import { UPDATE_CART_ITEM } from '@/store/actions.type'
 import { mapState } from 'vuex'
-import Cookies from 'universal-cookie'
 
 import related from '@/assets/icon/empty.svg'
 import {
   FETCH_A_PRODUCT,
   FETCH_CART,
   FETCH_PRODUCTS,
+  FETCH_TOPPING,
+  FETCH_BRAND,
 } from '../store/actions.type'
 import methodMixins from '../mixins/methodMixin'
 
 export default {
   name: 'Detail',
   mixins: [methodMixins],
-  setup() {
-    const cookies = new Cookies()
-    return {
-      cookies,
-    }
-  },
   data() {
     return {
       quantity: 1,
@@ -153,51 +148,39 @@ export default {
     const id = this.$route.params.id
     this.$store.dispatch(FETCH_A_PRODUCT, id)
     if (!this.brands) {
-      this.$store.dispatch('fetchBrands')
+      this.$store.dispatch(FETCH_BRAND)
     }
     if (!this.toppings) {
       console.log(this.toppings)
-      this.$store.dispatch('fetchTopping')
+      this.$store.dispatch(FETCH_TOPPING)
     }
     this.$store.dispatch(FETCH_PRODUCTS, { categoryId: [2] })
   },
   methods: {
-    sub_quantity: function () {
-      if (this.quantity > 1) {
-        this.quantity = this.quantity - 1
-      }
+    subQuantity() {
+      if (this.quantity > 1) this.quantity = this.quantity - 1
     },
-    add_quantity: function () {
+    addQuantity() {
       this.quantity = this.quantity + 1
     },
-    addToCart() {
-      console.log('vao day 1')
-      let id = parseInt(this.$route.params.id)
-      let isInCart = false
-      this.cart.forEach(c => {
-        if (c.product_id === id) {
-          console.log('vao day 2')
-          let quantity = parseInt(c.quantity) + this.quantity
-          let product = {
-            product_id: id,
-            quantity: quantity,
-          }
-          const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-          if (isSuccess) {
-            console.log('vao day 3')
-            return this.$store.dispatch(FETCH_CART)
-          }
-          return (isInCart = true)
-        }
-        if (isInCart) return
+    async addToCart() {
+      // get product id
+      let productID = parseInt(this.$route.params.id)
+      let quantity = this.quantity
+
+      let isInCart = this.cart.find(item => item.product_id === productID)
+      if (isInCart) quantity += isInCart.quantity
+
+      let product = { product_id: productID, quantity: quantity }
+      const isSuccess = await this.$store.dispatch(UPDATE_CART_ITEM, product)
+      if (isSuccess) this.$store.dispatch(FETCH_CART)
+      this.scrollToTop()
+    },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
       })
-      console.log('vao day 4')
-      if (isInCart) return
-      let product = { product_id: id, quantity: this.quantity }
-      const isSuccess = this.$store.dispatch(UPDATE_CART_ITEM, product)
-      if (isSuccess) {
-        return this.$store.dispatch(FETCH_CART)
-      }
     },
   },
 }

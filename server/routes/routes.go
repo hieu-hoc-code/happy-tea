@@ -26,6 +26,7 @@ func Init() {
 
 	// auth admin
 	router.HandleFunc("/api/login/admin", controllers.LoginAdmin).Methods("POST")
+	router.HandleFunc("/api/register/admin", controllers.RegisterAdmin).Methods("POST")
 	router.HandleFunc("/api/admin", middlewares.IsAuthenticated(controllers.GetAdmin)).Methods("GET")
 
 	// middleware
@@ -45,9 +46,9 @@ func Init() {
 
 	// cart
 	router.HandleFunc("/api/cart", IsAuthenticated(controllers.CreateCart)).Methods("POST")
-	router.HandleFunc("/api/cartitems", IsAuthenticated(controllers.GetCartItem)).Queries("cart_id", "{cart_id}").Methods("GET")
+	router.HandleFunc("/api/cartitems/{id}", IsAuthenticated(controllers.GetCartItem)).Methods("GET")
 	router.HandleFunc("/api/cartitems", controllers.CreateCartItem).Methods("POST")
-	router.HandleFunc("/api/cartitems", controllers.DeleteCartItem).Queries("id", "{id}").Methods("DELETE")
+	router.HandleFunc("/api/cartitems/{id}", controllers.DeleteCartItem).Methods("DELETE")
 
 	// user_payment
 	router.HandleFunc("/api/userpayments", IsAuthenticated(controllers.CreateUserPayment)).Methods("POST")
