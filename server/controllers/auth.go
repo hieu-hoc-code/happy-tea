@@ -47,8 +47,10 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	database.DB.Create(&user)
 
-	json.NewEncoder(w).Encode(&user)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Đăng ký tài khoản thành công <3")
 }
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	// parse body
 	var data map[string]string
@@ -123,6 +125,43 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&response)
 }
 
+// admin
+
+func RegisterAdmin(w http.ResponseWriter, r *http.Request) {
+	// parse body
+	var data map[string]string
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		fmt.Fprintf(w, "error when body parse %v", data)
+		return
+	}
+
+	// check password & confirm password
+	if data["password"] != data["confirm"] {
+		fmt.Fprintf(w, "password do not match")
+		return
+	}
+
+	// check email existed
+	var isExist models.Admin
+	database.DB.Where("email = ?", data["email"]).First(&isExist)
+	if isExist.Email != "" {
+		fmt.Fprintf(w, "email exists")
+		return
+	}
+
+	// hash password
+	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+
+	var admin models.Admin
+	admin.Name = data["name"]
+	admin.Email = data["email"]
+	admin.Password = password
+
+	database.DB.Create(&admin)
+
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Đăng ký tài khoản admin thành công <3")
+}
 func LoginAdmin(w http.ResponseWriter, r *http.Request) {
 	var data map[string]string
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
@@ -134,10 +173,12 @@ func LoginAdmin(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(&response)
 		return
 	}
+
 	// check email exist
 	var admin models.Admin
 
 	database.DB.Where("email = ?", data["email"]).First(&admin)
+
 	if admin.Email == "" {
 		errors := []string{"email or password incorrect"}
 		response := map[string][]string{

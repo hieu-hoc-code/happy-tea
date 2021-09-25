@@ -1,8 +1,11 @@
 import ApiService from './api.service'
 
 const AuthService = {
-  login({from, ...user}) {
-    return ApiService.post(`api${from}`, user)
+  login(user) {
+    return ApiService.post(`api/login`, user)
+  },
+  loginAdmin(user) {
+    return ApiService.post(`api/login/admin`, user)
   },
   me() {
     return ApiService.get('/api/user')
@@ -18,6 +21,9 @@ const AuthService = {
   },
   uploadImage(formData) {
     return ApiService.patch('/api/upload/user', formData)
+  },
+  register(user) {
+    return ApiService.post('/api/register', user)
   },
 }
 

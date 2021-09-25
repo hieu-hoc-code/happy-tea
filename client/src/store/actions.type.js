@@ -3,6 +3,8 @@ export const LOGIN = 'login'
 export const CHECK_AUTHENTICATE = 'checkAuthenticate'
 export const LOGOUT = 'logOut'
 export const UPDATE_USER = 'updateUser'
+export const REGISTER = 'register'
+export const LOGIN_ADMIN = 'loginAdmin'
 
 // product
 export const SEARCH_PRODUCT = 'searchProduct'
