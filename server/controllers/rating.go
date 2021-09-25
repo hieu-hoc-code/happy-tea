@@ -44,4 +44,5 @@ func CreateRating(w http.ResponseWriter, r *http.Request) {
 	database.DB.Save(&product)
 	database.DB.Create(&rating)
 	json.NewEncoder(w).Encode("create rating success")
+	ClearProductCache(*database.Cache, database.Ctx)
 }
