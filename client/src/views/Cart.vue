@@ -27,7 +27,7 @@
                 />
               </div>
               <div class="img">
-                <img :src="sp1" alt="Hinh anh" />
+                <img :src="cart.image" alt="Hinh anh" />
                 <span>{{ cart.name }}</span>
               </div>
 
@@ -223,6 +223,9 @@ export default {
             margin-top: 45px;
             width: 20px;
             height: 20px;
+            &:hover {
+              cursor: pointer;
+            }
           }
         }
 
@@ -257,6 +260,10 @@ export default {
           font-size: 20px;
           i {
             padding: 8px;
+            &:hover {
+              color:black;
+              cursor: pointer;
+            }
           }
         }
         .remove {
@@ -273,6 +280,7 @@ export default {
             font-family: 'Quicksand';
             transition: all 0.3s linear;
             &:hover {
+              cursor: pointer;
               color: white;
               background: rgb(216, 74, 74);
             }
@@ -369,6 +377,7 @@ export default {
           transition: background-color 0.3s linear;
           font-family: 'Quicksand';
           &:hover {
+            cursor: pointer;
             background: #e5858d !important;
           }
           &:active {

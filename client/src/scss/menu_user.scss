@@ -11,6 +11,10 @@
     display: grid;
     place-content: center;
     margin: auto;
+    p {
+      margin-top: 10px;
+      font-weight: 600;
+    }
     img{
       width: 6rem;
       height: 6rem;
@@ -21,7 +25,7 @@
     input.upload-box{
       width: 15px;
       height: 15px;
-      transform: translate(65px, -13px);
+      transform: translate(80px, -40px);
       background-color: white;
       outline: none;
       border-radius: 10px;
@@ -36,7 +40,7 @@
       font-weight: bold;
       box-shadow: 0 0 3px rgb(210, 243, 243);
       &:hover{
-        background-color: #65fa65;
+        background-color: #1ea01e;
       }
     }
     button{
@@ -44,12 +48,16 @@
       padding: 5px 0;
       width: 100%;
       margin: auto;
-      border-radius: 15px;
+      font-weight: bold;
+      border: 1px solid;
+      background-color: white;
+      color: rgb(74, 181, 110);
+      border-radius: 8px;
       cursor: pointer;
-      display: none;
+      transition: all .3s linear;
       &:hover{
-        font-weight: bold;
-        background-color: white;
+        color:white;
+        background-color: rgb(74, 181, 110);
       }
     }
   }

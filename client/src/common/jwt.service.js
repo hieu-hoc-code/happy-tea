@@ -30,7 +30,8 @@ export const getToken = () => {
 
 export const removeToken = () => {
   cookies.remove('admin')
-  return cookies.remove('jwt')
+  cookies.remove('jwt')
+  return
 }
 
 // cart id

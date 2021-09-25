@@ -1,7 +1,7 @@
 <template>
   <div class="createaddress">
-    <div class="can">
-      <i class="fa fa-close" @click="send"></i>
+    <div class="can" @click="send">
+      <i class="fa fa-close"></i>
     </div>
     <form @submit.prevent="update">
       <div class="information">
@@ -80,7 +80,6 @@
         <button>Thêm địa chỉ</button>
       </div>
     </form>
-    <div>{{ propTitle }}</div>
   </div>
 </template>
 
@@ -179,7 +178,26 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/scss/_variables';
+
 .createaddress {
+  input,select {
+    flex: 60%;
+    color: rgb(138, 138, 138);
+    border-radius: 8px;
+    border: 1px solid rgb(199, 195, 195);
+    padding: 3px 8px;
+    font-size: 14px;
+    font-family: 'Quicksand';
+    &:focus {
+      border-color: $app-bg-color;
+    }
+  }
+  label,span {
+    margin-right: 20px;
+    text-align: right;
+    flex:20%;
+    font-weight: 600;
+  }
   .can {
     width: 90%;
     margin: $gap auto;
@@ -187,12 +205,17 @@ export default {
     justify-content: flex-end;
     padding: 5px;
     background-color: rgb(245, 195, 176);
-    color: black;
+    border-radius: 8px;
+    color: rgb(235, 107, 107);
     transform: translateY(10px);
     cursor: pointer;
     box-shadow: 2px 2px 3px rgb(145, 145, 145);
+    transition: all .3s linear;
+   &:hover {
+      opacity: 0.7;
+    }
     &:active {
-      transform: translateY(13px);
+      transform: translateY(4px);
       box-shadow: none;
     }
   }
@@ -204,7 +227,7 @@ export default {
     margin: auto;
     .information {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       padding: 5px 0;
       input {
         &:focus {
@@ -229,6 +252,9 @@ export default {
     span {
       margin-left: $gap;
     }
+    &:hover {
+      cursor: pointer;
+    }
   }
   .commit {
     button[id='cancel'] {
@@ -242,13 +268,17 @@ export default {
     button {
       cursor: pointer;
       padding: 5px $gap;
-      box-shadow: 3px 3px 3px #333;
-      background-color: aliceblue;
-      border: 0.5px solid rgb(222, 222, 223);
-      color: rgb(65, 65, 65);
+      color: rgb(74, 181, 110);
+      background: white;
+      border: 0.5px solid;
+      border-radius: 8px;
+      font-family: 'Quicksand';
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.3s linear;
       &:hover {
-        background-color: darken(aliceblue, 5);
-        color: black;
+       color: white;
+       background: rgb(74, 181, 110);
       }
       &:focus {
         transform: translateY(3px);

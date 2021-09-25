@@ -13,7 +13,7 @@
         <td>{{ product.quantity }}</td>
         <td>{{ priceMod(product.price) }}</td>
           <button class="btn rebuy">Mua lại</button>
-          <button class="btn rate" @click="openModal(product.id)">Đánh giá</button>
+          <button class="btn rate" @click="openModal(product.product_id)">Đánh giá</button>
       </tr>
     </table>
     <div class="modal" ref="modal">

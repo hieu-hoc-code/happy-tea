@@ -53,7 +53,7 @@
           <button @click="addToCart">Thêm vào giỏ hàng</button>
         </div>
       </div>
-      <div v-if="product" class="related">
+      <div v-if="!products" class="related">
         <h4>Sản phẩm liên quan</h4>
         <div class="related-sp">
           <img :src="related" />
@@ -362,13 +362,14 @@ export default {
           color: $app-main-text-color;
         }
       }
+    }
       .filter-result-body {
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         padding: 20px;
         .card {
           width: 20%;
-          position: inherit;
           .card-item {
             padding: 5px $gap;
           }
@@ -405,7 +406,6 @@ export default {
           }
         }
       }
-    }
   }
 }
 </style>
